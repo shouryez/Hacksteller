@@ -16,6 +16,11 @@ type State = {
   answerLang: Lang;
   captureLang: Lang;
   hydrated: boolean;
+  costPerHour: number;
+  presenterOpen: boolean;
+  setCostPerHour: (n: number) => void;
+  setPresenterOpen: (v: boolean) => void;
+  importStories: (s: Story[]) => number;
   addStory: (s: Story) => void;
   removeStory: (id: string) => void;
   enqueue: (q: Omit<QueuedQuestion, "id" | "createdAt">) => void;
@@ -43,6 +48,20 @@ export const useStore = create<State>()(
       answerLang: "en-IN",
       captureLang: "en-IN",
       hydrated: false,
+      costPerHour: 25000,
+      presenterOpen: false,
+      setCostPerHour: (costPerHour) => set({ costPerHour }),
+      setPresenterOpen: (presenterOpen) => set({ presenterOpen }),
+      importStories: (incoming) => {
+        let added = 0;
+        set((st) => {
+          const ids = new Set(st.stories.map((x) => x.id));
+          const fresh = incoming.filter((x) => !ids.has(x.id));
+          added = fresh.length;
+          return { stories: [...st.stories, ...fresh] };
+        });
+        return added;
+      },
       addStory: (s) => set((st) => ({ stories: [...st.stories.filter((x) => x.id !== s.id), s] })),
       removeStory: (id) => set((st) => ({ stories: st.stories.filter((x) => x.id !== id) })),
       enqueue: (q) =>

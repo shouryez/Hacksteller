@@ -38,3 +38,15 @@ export async function sarvamTts(text: string, languageCode: string, speaker: str
   if (!audios.length) throw new Error("Sarvam TTS returned no audio");
   return Buffer.from(audios[0], "base64");
 }
+
+/** Translates short text between English and Indian languages (used to localise offline answers). */
+export async function sarvamTranslate(text: string, source: string, target: string): Promise<string> {
+  const res = await fetch(`${BASE}/translate`, {
+    method: "POST",
+    headers: { ...headers(), "content-type": "application/json" },
+    body: JSON.stringify({ input: text.slice(0, 1800), source_language_code: source, target_language_code: target }),
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json?.error?.message ?? `Sarvam translate failed (${res.status})`);
+  return String(json.translated_text ?? text);
+}

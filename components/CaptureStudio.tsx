@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Keyboard, Loader2, Mic, PlayCircle, RotateCcw, Sparkles, Square, TrendingUp } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { toast } from "@/lib/toast";
 import { useStatus } from "@/hooks/useStatus";
 import { useRecorder } from "@/hooks/useRecorder";
 import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
@@ -114,6 +115,10 @@ export function CaptureStudio({
       const after = computeCoverage([...current.filter((s) => s.id !== id), story]).overall;
       addStory(story);
       setDelta({ before, after });
+      toast(`Captured: ${res.data.title}`, {
+        description:
+          after > before + 0.005 ? `Knowledge coverage ${pct(before)} → ${pct(after)}` : `${res.data.fixes.length} fixes, ${res.data.tribalTips.length} tribal tips`,
+      });
       setResult({ story, source: res.source });
       setPhase("done");
       onSaved?.(story);
@@ -212,7 +217,7 @@ export function CaptureStudio({
   const busy = phase === "transcribing" || phase === "extracting";
 
   return (
-    <div className={cn("grid gap-5", !stacked && "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]")}>
+    <div className={cn("grid grid-cols-[minmax(0,1fr)] gap-5", !stacked && "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]")}>
       <div className="space-y-4">
         {question && (
           <Card className="border-accent/40 bg-accent/5">

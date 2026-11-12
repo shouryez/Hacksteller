@@ -2,6 +2,7 @@ import { callClaude } from "@/lib/claude";
 import { offlineAsk } from "@/lib/offline";
 import { ASK_SYSTEM } from "@/lib/prompts";
 import { badRequest, withFallback } from "@/lib/route-helpers";
+import { hasSarvam, sarvamTranslate } from "@/lib/sarvam";
 import { AskResultSchema } from "@/lib/schemas";
 import { EXPERTS, MACHINES, faultStats } from "@/lib/seed";
 import type { AskResult, Story } from "@/lib/types";
@@ -42,6 +43,18 @@ export async function POST(req: Request) {
   return withFallback<AskResult>(
     Boolean(body.demo),
     () => callClaude({ system: ASK_SYSTEM, user, schema: AskResultSchema, effort: "low" }),
-    () => offlineAsk(question, stories),
+    async () => {
+      const result = offlineAsk(question, stories);
+      const lang = body.answerLang ?? "en-IN";
+      // The offline brain only speaks English; let Sarvam localise the spoken part.
+      if (lang !== "en-IN" && hasSarvam()) {
+        try {
+          result.spokenAnswer = await sarvamTranslate(result.spokenAnswer, "en-IN", lang);
+        } catch (err) {
+          console.error("[sarvam] translate failed:", err);
+        }
+      }
+      return result;
+    },
   );
 }

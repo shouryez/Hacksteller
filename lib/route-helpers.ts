@@ -7,18 +7,18 @@ import type { ApiEnvelope, Source } from "./types";
 export async function withFallback<T>(
   demo: boolean,
   claudeFn: () => Promise<T>,
-  offlineFn: () => T,
+  offlineFn: () => T | Promise<T>,
 ): Promise<NextResponse<ApiEnvelope<T>>> {
   if (demo || !hasClaude()) {
     const source: Source = demo ? "demo" : "offline";
-    return NextResponse.json({ data: offlineFn(), source, note: demo ? "Demo Mode" : "No ANTHROPIC_API_KEY set" });
+    return NextResponse.json({ data: await offlineFn(), source, note: demo ? "Demo Mode" : "No ANTHROPIC_API_KEY set" });
   }
   try {
     return NextResponse.json({ data: await claudeFn(), source: "claude" as Source });
   } catch (err) {
     console.error("[claude] falling back to offline brain:", err);
     return NextResponse.json({
-      data: offlineFn(),
+      data: await offlineFn(),
       source: "offline" as Source,
       note: err instanceof Error ? err.message : "Claude call failed",
     });

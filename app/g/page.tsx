@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { AlertTriangle, Ghost, Lightbulb, Wrench } from "lucide-react";
 import { inflateFromBase64Url } from "@/lib/client";
 import type { SharedGuide } from "@/lib/guide";
+import { StepChecklist } from "@/components/StepChecklist";
 
 /** Phone view for QR-shared guides. The guide lives entirely in the URL fragment. */
 export default function SharedGuidePage() {
@@ -44,14 +45,7 @@ export default function SharedGuidePage() {
         <div className="mb-2 flex items-center gap-2 font-semibold">
           <Wrench className="h-4 w-4 text-ok" /> Steps
         </div>
-        <ol className="space-y-3">
-          {g.p.map((s, i) => (
-            <li key={i} className="flex gap-3 text-lg leading-snug">
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ok/20 font-semibold text-ok">{i + 1}</span>
-              <span className="pt-0.5">{s}</span>
-            </li>
-          ))}
-        </ol>
+        <StepChecklist size="lg" steps={g.p.map((text) => ({ text }))} />
       </div>
       {g.o.length > 0 && <div className="text-sm text-muted">Tools: {g.o.join(", ")}</div>}
       {g.q.length > 0 && (

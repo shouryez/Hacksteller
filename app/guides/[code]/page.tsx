@@ -4,6 +4,7 @@ import { use, useEffect, useMemo, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { AlertTriangle, FileText, Lightbulb, Loader2, Mic, Printer, QrCode, Wrench } from "lucide-react";
 import { AudioClip } from "@/components/AudioClip";
+import { StepChecklist } from "@/components/StepChecklist";
 import { Badge, Button, Card, Eyebrow, SourceBadge } from "@/components/ui";
 import { deflateToBase64Url, postJson } from "@/lib/client";
 import { buildGuide, guideCacheKey, toShared } from "@/lib/guide";
@@ -151,19 +152,15 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
               <Eyebrow className="mb-3 flex items-center gap-1.5">
                 <Wrench className="h-3.5 w-3.5" /> Procedure
               </Eyebrow>
-              <ol className="space-y-2">
-                {guide.steps.map((s, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-ok/15 text-sm font-semibold text-ok">{i + 1}</span>
-                    <div className="pt-0.5">
-                      {s.text}
-                      <span className="ml-2 text-xs text-muted">
-                        {s.sourceStoryIds.map((id) => expertById(linked.find((l) => l.id === id)?.expertId ?? "")?.name.split(" ")[0]).filter(Boolean).join(", ")}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ol>
+              <StepChecklist
+                steps={guide.steps.map((st) => ({
+                  text: st.text,
+                  meta: st.sourceStoryIds
+                    .map((id) => expertById(linked.find((l) => l.id === id)?.expertId ?? "")?.name.split(" ")[0])
+                    .filter(Boolean)
+                    .join(", "),
+                }))}
+              />
               {guide.tools.length > 0 && (
                 <div className="mt-4 flex flex-wrap gap-1.5">
                   {guide.tools.map((t) => (

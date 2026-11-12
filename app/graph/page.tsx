@@ -33,7 +33,7 @@ export default function GraphPage() {
           ))}
         </div>
       </div>
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="space-y-2">
           <KnowledgeGraph graph={graph} height={640} machineFilter={filter} onNodeClick={setSelected} highlightIds={selected ? new Set([selected.id]) : undefined} />
           <GraphLegend />

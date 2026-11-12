@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertTriangle, Ghost, Loader2, Mic, Send, Square, Volume2, Wrench } from "lucide-react";
 import { AudioClip } from "@/components/AudioClip";
@@ -10,6 +10,7 @@ import { transcribeWithSarvam } from "@/lib/audio";
 import { guessFault } from "@/lib/offline";
 import { PRIMARY_EXPERT, expertById, machineById } from "@/lib/seed";
 import { useStore } from "@/lib/store";
+import { toast } from "@/lib/toast";
 import type { AskResult, Lang, Source } from "@/lib/types";
 import { useRecorder } from "@/hooks/useRecorder";
 import { useSpeaker } from "@/hooks/useSpeaker";
@@ -60,6 +61,7 @@ export default function AskPage() {
           why: `A junior asked: “${text}”`,
           origin: "junior",
         });
+        toast("Added to Raju's interview list", { tone: "warn", description: "The ghost won't guess. This gap will be captured next." });
       }
       void speaker.speak(res.data.spokenAnswer, answerLang, PRIMARY_EXPERT.voice);
     } catch (e) {
@@ -124,7 +126,7 @@ export default function AskPage() {
             {listening ? <Square className="h-5 w-5" fill="currentColor" /> : <Mic className="h-6 w-6" />}
           </button>
           <form
-            className="flex flex-1 gap-2"
+            className="flex min-w-0 flex-1 gap-2"
             onSubmit={(e) => {
               e.preventDefault();
               void ask(question);
@@ -134,7 +136,7 @@ export default function AskPage() {
               value={listening ? liveText : question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder={listening ? "Listening…" : "e.g. machine four is getting hot and the alarm keeps coming back"}
-              className="h-12 flex-1 rounded-lg border border-line bg-panel2 px-4 text-base outline-none focus:border-accent"
+              className="h-12 min-w-0 flex-1 rounded-lg border border-line bg-panel2 px-4 text-base outline-none focus:border-accent"
             />
             <Button type="submit" variant="primary" size="lg" disabled={loading || !question.trim()}>
               {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
@@ -211,9 +213,9 @@ function AnswerCard({ turn, latest, speaking, onSpeak }: { turn: Turn; latest: b
             {!r.notCovered && <Badge tone={r.confidence === "high" ? "ok" : r.confidence === "medium" ? "warn" : "bad"}>{r.confidence} confidence</Badge>}
             <SourceBadge source={turn.source} />
           </div>
-          <p className="text-lg leading-snug">{r.spokenAnswer}</p>
+          <p className="text-lg leading-snug">{latest ? <Typewriter text={r.spokenAnswer} /> : r.spokenAnswer}</p>
           <Button size="sm" variant="ghost" onClick={onSpeak}>
-            <Volume2 className="h-4 w-4" /> {speaking ? "Stop" : "Play answer"}
+            {speaking ? <VoiceBars /> : <Volume2 className="h-4 w-4" />} {speaking ? "Stop" : "Play answer"}
           </Button>
         </div>
       </div>
@@ -287,5 +289,41 @@ function AnswerCard({ turn, latest, speaking, onSpeak }: { turn: Turn; latest: b
         </>
       )}
     </Card>
+  );
+}
+
+function Typewriter({ text }: { text: string }) {
+  const words = text.split(" ");
+  const [n, setN] = useState(0);
+  const [shownFor, setShownFor] = useState(text);
+  if (shownFor !== text) {
+    setShownFor(text);
+    setN(0);
+  }
+  useEffect(() => {
+    if (n >= words.length) return;
+    const t = setTimeout(() => setN((x) => x + 1), 45);
+    return () => clearTimeout(t);
+  }, [n, words.length]);
+  return (
+    <>
+      {words.slice(0, n).join(" ")}
+      {n < words.length && <span className="ml-0.5 inline-block h-4 w-1.5 animate-pulse bg-accent align-middle" />}
+    </>
+  );
+}
+
+function VoiceBars() {
+  return (
+    <span className="flex h-4 items-end gap-0.5" aria-hidden>
+      {[0, 1, 2, 3].map((i) => (
+        <motion.span
+          key={i}
+          className="w-0.5 rounded-full bg-accent"
+          animate={{ height: ["30%", "100%", "45%", "80%", "30%"] }}
+          transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.12 }}
+        />
+      ))}
+    </span>
   );
 }

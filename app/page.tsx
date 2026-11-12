@@ -6,6 +6,7 @@ import { AlertOctagon, ArrowRight, CalendarClock, FileText, Mic, Quote } from "l
 import { CoverageRing } from "@/components/CoverageRing";
 import { Badge, Button, Card, Eyebrow } from "@/components/ui";
 import { computeCoverage, pct } from "@/lib/coverage";
+import { computeImpact, inr } from "@/lib/impact";
 import { FAULT_RECORDS, PRIMARY_EXPERT, daysUntil, hours, machineById } from "@/lib/seed";
 import { useStore } from "@/lib/store";
 
@@ -13,6 +14,9 @@ export default function RadarPage() {
   const stories = useStore((s) => s.stories);
   const queue = useStore((s) => s.queue);
   const cov = useMemo(() => computeCoverage(stories), [stories]);
+  const impact = useMemo(() => computeImpact(stories), [stories]);
+  const costPerHour = useStore((s) => s.costPerHour);
+  const setCostPerHour = useStore((s) => s.setCostPerHour);
   const days = daysUntil(PRIMARY_EXPERT.retiresOn);
   const rajuStories = stories.filter((s) => s.expertId === PRIMARY_EXPERT.id).length;
 
@@ -159,6 +163,53 @@ export default function RadarPage() {
           </div>
         </Card>
       </div>
+
+      <Card>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <Eyebrow>Why it matters</Eyebrow>
+            <h2 className="mt-1 text-lg font-semibold">What Raju&apos;s captured knowledge is worth</h2>
+          </div>
+          <label className="flex items-center gap-2 text-xs text-muted">
+            Assumed cost of 1 h downtime ₹
+            <input
+              type="number"
+              min={0}
+              step={1000}
+              value={costPerHour}
+              onChange={(e) => setCostPerHour(Math.max(0, Number(e.target.value) || 0))}
+              className="h-8 w-28 rounded-md border border-line bg-panel2 px-2 text-sm text-text outline-none focus:border-accent"
+            />
+          </label>
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <div className="rounded-lg border border-ok/30 bg-ok/5 p-4">
+            <div className="text-3xl font-semibold tabular-nums text-ok">{hours(impact.savedMin)}/yr</div>
+            <div className="text-sm text-muted">downtime avoidable with captured fixes</div>
+            <div className="mt-1 text-lg font-medium tabular-nums">≈ {inr((impact.savedMin / 60) * costPerHour)}</div>
+          </div>
+          <div className="rounded-lg border border-bad/30 bg-bad/5 p-4">
+            <div className="text-3xl font-semibold tabular-nums text-bad">{hours(impact.atRiskMin)}/yr</div>
+            <div className="text-sm text-muted">downtime with no fix on record</div>
+            <div className="mt-1 text-lg font-medium tabular-nums">≈ {inr((impact.atRiskMin / 60) * costPerHour)} at risk</div>
+          </div>
+          <div className="rounded-lg border border-line bg-panel2 p-4 text-sm">
+            <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted">Biggest wins</div>
+            {impact.perFault.slice(0, 3).map((f) => (
+              <div key={f.faultCode} className="flex justify-between gap-2 py-0.5">
+                <span>
+                  <span className="font-mono text-accent">{f.faultCode}</span> {Math.round(f.avgDowntimeMin)} → {f.fixMin} min
+                </span>
+                <span className="tabular-nums text-muted">{hours(f.savedMin)}</span>
+              </div>
+            ))}
+            {impact.perFault.length === 0 && <div className="text-muted">Capture a fix to see savings.</div>}
+          </div>
+        </div>
+        <p className="mt-3 text-xs text-muted">
+          Avoidable downtime = (average recorded downtime − the expert&apos;s stated fix time) × occurrences over the last 12 months. The cost per hour is your assumption.
+        </p>
+      </Card>
     </div>
   );
 }

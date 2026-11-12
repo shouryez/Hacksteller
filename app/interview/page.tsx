@@ -97,7 +97,7 @@ function Interview() {
         )}
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-[340px_minmax(0,1fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 xl:grid-cols-[340px_minmax(0,1fr)]">
         <div className="space-y-2">
           {items.length === 0 && <Card className="text-sm text-ok">No open gaps or questions. Raju&apos;s knowledge is bottled.</Card>}
           {items.map((it) => (
