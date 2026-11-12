@@ -21,6 +21,9 @@ export const StoryExtractionSchema = z.object({
     }),
   ),
   tribalTips: z.array(z.object({ text: z.string(), quote: z.string() })),
+  manualCorrections: z
+    .array(z.object({ manualSays: z.string(), expertSays: z.string() }))
+    .describe("Where the technician contradicts or goes beyond the official manual; empty if none"),
   confidence,
 });
 

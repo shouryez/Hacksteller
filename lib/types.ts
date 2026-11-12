@@ -20,7 +20,14 @@ export type FaultRecord = {
   downtimeMin: number;
   technician: string;
   resolutionNote: string;
+  /** seed = bundled demo log, import = uploaded CSV, logged = fix confirmed through a GhostWrench guide. */
+  origin?: "seed" | "import" | "logged";
+  viaGuide?: boolean;
 };
+
+export type ManualEntry = { faultCode: string; machineId: string; source: string; says: string[] };
+
+export type ManualCorrection = { manualSays: string; expertSays: string };
 
 export type Confidence = "high" | "medium" | "low";
 
@@ -41,6 +48,8 @@ export type StoryExtraction = {
     estMinutes: number;
   }[];
   tribalTips: { text: string; quote: string }[];
+  /** Places where the expert contradicts or goes beyond the official manual. */
+  manualCorrections?: ManualCorrection[];
   confidence: Confidence;
 };
 

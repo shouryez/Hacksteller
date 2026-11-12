@@ -4,7 +4,8 @@ import { ASK_SYSTEM } from "@/lib/prompts";
 import { badRequest, withFallback } from "@/lib/route-helpers";
 import { hasSarvam, sarvamTranslate } from "@/lib/sarvam";
 import { AskResultSchema } from "@/lib/schemas";
-import { EXPERTS, MACHINES, faultStats } from "@/lib/seed";
+import { machinesFor, mergeRecords, sanitizeRecords } from "@/lib/records";
+import { EXPERTS, faultStats } from "@/lib/seed";
 import type { AskResult, Story } from "@/lib/types";
 
 export const maxDuration = 60;
@@ -16,13 +17,15 @@ export async function POST(req: Request) {
     question?: string;
     stories?: Story[];
     answerLang?: string;
+    extraRecords?: unknown;
     demo?: boolean;
   };
   const question = body.question?.trim();
   if (!question) return badRequest("question is required");
   const stories = Array.isArray(body.stories) ? body.stories : [];
 
-  const stats = faultStats();
+  const records = mergeRecords(sanitizeRecords(body.extraRecords));
+  const stats = faultStats(records);
   const knowledge = stories.map((s) => ({
     id: s.id,
     expert: EXPERTS.find((e) => e.id === s.expertId)?.name ?? s.expertId,
@@ -33,7 +36,7 @@ export async function POST(req: Request) {
     extraction: { ...s.extraction, transcriptEnglish: undefined },
   }));
   const ranked = scoreStories(question, stories).slice(0, 3);
-  const likely = guessFault(question);
+  const likely = guessFault(question, stats);
   const hints = [
     likely ? `Fault whose description best matches the question: ${likely.faultCode} (${likely.description}) on ${likely.machineId}.` : "",
     `Keyword pre-ranking of stories (a hint, may be wrong): ${ranked.map((r) => `${r.story.id} [${r.story.extraction.faultCodes.join(",") || "no code"}]`).join(", ")}`,
@@ -41,7 +44,7 @@ export async function POST(req: Request) {
     .filter(Boolean)
     .join("\n");
   const user = [
-    `Machines: ${MACHINES.map((m) => `${m.id} = ${m.name}`).join("; ")}`,
+    `Machines: ${machinesFor(records).map((m) => `${m.id} = ${m.name}`).join("; ")}`,
     `Fault statistics (last 12 months):\n${stats
       .map((f) => `- ${f.faultCode} on ${f.machineId}: ${f.description}, ${f.occurrences}x, ${f.downtimeMin} min`)
       .join("\n")}`,
@@ -55,7 +58,7 @@ export async function POST(req: Request) {
     Boolean(body.demo),
     () => callLLM({ system: ASK_SYSTEM, user, schema: AskResultSchema, effort: "low", thinking: "light", timeoutMs: 12_000, deadlineMs: 25_000 }),
     async () => {
-      const result = offlineAsk(question, stories);
+      const result = offlineAsk(question, stories, stats);
       const lang = body.answerLang ?? "en-IN";
       // The offline brain only speaks English; let Sarvam localise the spoken part.
       if (lang !== "en-IN" && hasSarvam()) {

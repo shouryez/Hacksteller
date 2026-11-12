@@ -164,13 +164,13 @@ function guessFaultScored(question: string, stats: FaultStat[] = faultStats()): 
   return best;
 }
 
-export function offlineAsk(question: string, stories: Story[]): AskResult {
+export function offlineAsk(question: string, stories: Story[], stats: FaultStat[] = faultStats()): AskResult {
   const ranked = scoreStories(question, stories);
   const top = ranked[0];
   const expertName = (id: string) => EXPERTS.find((e) => e.id === id)?.name.split(" ")[0] ?? "the expert";
 
   // The question clearly names a different fault that nobody has explained: refuse rather than misanswer.
-  const guessed = guessFaultScored(question);
+  const guessed = guessFaultScored(question, stats);
   const describesOtherGap =
     guessed &&
     guessed.score >= 4 &&
@@ -258,7 +258,7 @@ function overlap(a: string, b: string): number {
   return n / Math.max(1, Math.min(A.size, B.size));
 }
 
-export function offlineExtract(transcript: string, machineId: string): StoryExtraction {
+export function offlineExtract(transcript: string, machineId: string, allStats: FaultStat[] = faultStats()): StoryExtraction {
   // Rehearsed stories map straight to their curated extraction.
   if (overlap(transcript, LIVE_DEMO.transcript) > 0.45 || (machineId === "L-04" && /servo|e-?\s?311|over-?temp|cabinet filter/i.test(transcript))) {
     return LIVE_DEMO.extraction;
@@ -269,7 +269,7 @@ export function offlineExtract(transcript: string, machineId: string): StoryExtr
     .split(/(?<=[.!?])\s+|\n+/)
     .map((s) => s.trim())
     .filter((s) => s.length > 3);
-  const stats = faultStats().filter((f) => f.machineId === machineId);
+  const stats = allStats.filter((f) => f.machineId === machineId);
   let codes = detectFaultCodes(transcript);
   if (!codes.length) {
     const g = guessFault(transcript, stats);
@@ -286,6 +286,11 @@ export function offlineExtract(transcript: string, machineId: string): StoryExtr
   const tools = TOOLS.filter((t) => lower.includes(t)).map((t) => t.replace(/\b\w/g, (c) => c.toUpperCase()));
   const safety = sentences.filter((s) => SAFETY.test(s)).slice(0, 3);
   const tips = sentences.filter((s) => TIP.test(s)).slice(0, 3);
+  const manualCorrections = sentences
+    .map((s, i) => ({ s, next: sentences[i + 1] }))
+    .filter(({ s }) => /\bmanual\b/i.test(s))
+    .slice(0, 3)
+    .map(({ s, next }) => ({ manualSays: clip(s, 140), expertSays: clip(next ?? s, 160) }));
   const minutes = /(\d+|ten|twenty|thirty|half an hour)\s*(minutes|mins|hour)?/i.exec(transcript);
   const est = minutes
     ? /half an hour/i.test(minutes[0])
@@ -318,6 +323,7 @@ export function offlineExtract(transcript: string, machineId: string): StoryExtr
     causes: causeList,
     fixes,
     tribalTips: tips.map((t) => ({ text: clip(t, 90), quote: t })),
+    manualCorrections,
     confidence: fixes.length && causeList.length ? "medium" : "low",
   };
 }

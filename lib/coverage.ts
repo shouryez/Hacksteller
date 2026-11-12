@@ -1,4 +1,5 @@
-import { FAULT_RECORDS, MACHINES, faultStats, type FaultStat } from "./seed";
+import { machinesFor } from "./records";
+import { FAULT_RECORDS, faultStats, type FaultStat } from "./seed";
 import type { FaultRecord, Story } from "./types";
 
 export type FaultCoverage = FaultStat & { covered: boolean; storyIds: string[]; expertIds: string[] };
@@ -29,7 +30,7 @@ export function computeCoverage(stories: Story[], records: FaultRecord[] = FAULT
   });
   const total = faults.reduce((a, f) => a + f.downtimeMin, 0);
   const covered = faults.filter((f) => f.covered).reduce((a, f) => a + f.downtimeMin, 0);
-  const byMachine = MACHINES.map((m) => {
+  const byMachine = machinesFor(records).map((m) => {
     const mf = faults.filter((f) => f.machineId === m.id);
     const totalMin = mf.reduce((a, f) => a + f.downtimeMin, 0);
     const coveredMin = mf.filter((f) => f.covered).reduce((a, f) => a + f.downtimeMin, 0);

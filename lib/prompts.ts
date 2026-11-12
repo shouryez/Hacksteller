@@ -14,6 +14,10 @@ Rules:
   manual gets wrong. Each tip has a crisp "text" and the technician's words in "quote".
 - Every fix lists safety precautions the technician mentioned, plus lockout/tagout if they
   describe opening or touching moving, electrical or pressurised parts.
+- "manualCorrections": every place where the technician's method contradicts, corrects or goes
+  beyond the official manual. "manualSays" is the manual's instruction (from the technician's
+  words or the manual excerpts provided); "expertSays" is what the technician does instead, in
+  one or two sentences. Only include a correction the transcript supports; empty list if none.
 - Steps are plain imperative sentences without numbering or bullets.
 - estMinutes: the technician's own estimate if given, otherwise a conservative estimate.
 - confidence reflects how complete and specific the explanation was.`;

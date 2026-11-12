@@ -7,6 +7,7 @@ import { Ghost, Menu, Presentation, RotateCcw, Wrench, X } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { toast } from "@/lib/toast";
 import { useStatus } from "@/hooks/useStatus";
+import { AlarmOverlay } from "./AlarmOverlay";
 import { PresenterPanel } from "./PresenterPanel";
 import { Toaster } from "./Toaster";
 import { cn } from "./ui";
@@ -15,8 +16,11 @@ export const NAV = [
   { href: "/", label: "Risk Radar" },
   { href: "/capture", label: "Capture" },
   { href: "/interview", label: "Interview" },
-  { href: "/ask", label: "Ask the Ghost" },
+  { href: "/ask", label: "Ask" },
   { href: "/guides", label: "Guides" },
+  { href: "/faults", label: "Fault Log" },
+  { href: "/manual", label: "Manual✗" },
+  { href: "/drill", label: "Drill" },
   { href: "/library", label: "Vault" },
   { href: "/graph", label: "Graph" },
 ];
@@ -84,7 +88,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Link
                 key={n.href}
                 href={n.href}
-                className={cn("rounded-md px-2.5 py-1.5 text-muted transition-colors hover:text-text", isActive(n.href) && "bg-panel2 text-text")}
+                className={cn("rounded-md px-2 py-1.5 text-[13px] text-muted transition-colors hover:text-text", isActive(n.href) && "bg-panel2 text-text")}
               >
                 {n.label}
               </Link>
@@ -169,8 +173,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         GhostWrench · HackStellar PS-15 · Press <kbd className="rounded border border-line px-1">P</kbd> for the presenter cue-card ·{" "}
         <Link href="/story" className="hover:text-text">
           Play the intro
+        </Link>{" "}
+        ·{" "}
+        <Link href="/report" className="hover:text-text">
+          Handover report
         </Link>
       </footer>
+      <AlarmOverlay />
       <PresenterPanel open={presenterOpen} onClose={() => setPresenterOpen(false)} />
       <Toaster />
     </div>

@@ -38,10 +38,14 @@ Import the repo in Vercel, add the two env vars, and deploy. The HTTPS URL is re
 | **Interview** `/interview` | AI questions about each gap plus every question the ghost couldn't answer; read aloud, record the answer, gap closes |
 | **Ask the Ghost** `/ask` | Voice or text; spoken answer in English/Hindi/Kannada, safety first, steps, cited original recording; honest refusal + auto-queued interview question |
 | **Guides** `/guides` | Fuzzy search; each guide has a tap-to-tick checklist, print view and an offline QR (`/g`) |
+| **Fault Log** `/faults` | The plant's fault records linked to expert knowledge; **CSV import** of a real fault log; **live alarm simulation** — the ghost answers an alarm with the expert's fix (or exposes the gap) |
+| **Manual vs reality** `/manual` | Every place the experts contradict the official manual, side by side, with the recording as proof |
+| **Apprentice Drill** `/drill` | The ghost quizzes juniors: scenario questions generated from the stories, with manual-trap wrong answers and the recording in every explanation |
+| **Handover report** `/report` | Printable one-pager for HR/maintenance head: captured knowledge, gaps, business impact, sign-off lines |
 | **Vault** `/library` | Every recording: search, filter, play, inspect, delete, export/import JSON |
 | **Graph** `/graph` | Full knowledge graph with machine filters; click a node to hear its sources |
 
-Also: presenter cue-card (press **P**), toasts, Demo Mode, installable PWA (manifest + icons), styled 404/error pages, works down to 320 px wide.
+Also: **capture completeness check** (the AI notices what the expert left out and asks the follow-up), **"log this fix"** on every guide (writes a real resolution back into the fault record and shows repair time before → after), presenter cue-card (press **P**), toasts, Demo Mode, installable PWA, styled 404/error pages, works down to 320 px wide.
 
 ## The 3-minute demo
 

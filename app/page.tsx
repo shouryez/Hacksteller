@@ -2,19 +2,23 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { AlertOctagon, ArrowRight, CalendarClock, FileText, Mic, Quote } from "lucide-react";
+import { AlertOctagon, ArrowRight, BadgeCheck, BookX, CalendarClock, FileScan, FileText, GraduationCap, Mic, Quote, Siren } from "lucide-react";
 import { CoverageRing } from "@/components/CoverageRing";
 import { Badge, Button, Card, Eyebrow } from "@/components/ui";
 import { computeCoverage, pct } from "@/lib/coverage";
 import { computeImpact, inr } from "@/lib/impact";
-import { FAULT_RECORDS, PRIMARY_EXPERT, daysUntil, hours, machineById } from "@/lib/seed";
+import { PRIMARY_EXPERT, daysUntil, hours, machineById } from "@/lib/seed";
 import { useStore } from "@/lib/store";
+import { useAlarm } from "@/lib/alarm";
+import { useRecords } from "@/hooks/useRecords";
 
 export default function RadarPage() {
   const stories = useStore((s) => s.stories);
   const queue = useStore((s) => s.queue);
-  const cov = useMemo(() => computeCoverage(stories), [stories]);
-  const impact = useMemo(() => computeImpact(stories), [stories]);
+  const records = useRecords();
+  const raiseAlarm = useAlarm((s) => s.raise);
+  const cov = useMemo(() => computeCoverage(stories, records), [stories, records]);
+  const impact = useMemo(() => computeImpact(stories, records), [stories, records]);
   const costPerHour = useStore((s) => s.costPerHour);
   const setCostPerHour = useStore((s) => s.setCostPerHour);
   const days = daysUntil(PRIMARY_EXPERT.retiresOn);
@@ -24,9 +28,10 @@ export default function RadarPage() {
     const story = stories.find((s) => s.extraction.tribalTips.length && s.extraction.faultCodes.length);
     if (!story) return null;
     const code = story.extraction.faultCodes[0];
-    const record = FAULT_RECORDS.filter((r) => r.faultCode === code).at(-1);
+    const record = records.filter((r) => r.faultCode === code && !r.viaGuide).at(-1);
     return record ? { record, tip: story.extraction.tribalTips[0], code } : null;
-  }, [stories]);
+  }, [stories, records]);
+  const alarmDemo = cov.faults.find((f) => f.covered);
 
   return (
     <div className="space-y-6">
@@ -65,6 +70,11 @@ export default function RadarPage() {
             <Link href="/ask">
               <Button>Ask the Ghost</Button>
             </Link>
+            {alarmDemo && (
+              <Button variant="ghost" onClick={() => raiseAlarm(alarmDemo.faultCode, alarmDemo.machineId)} title="Simulate a machine raising an alarm right now">
+                <Siren className="h-4 w-4 text-bad" /> Simulate a live alarm
+              </Button>
+            )}
           </div>
         </Card>
 
@@ -208,8 +218,38 @@ export default function RadarPage() {
         </div>
         <p className="mt-3 text-xs text-muted">
           Avoidable downtime = (average recorded downtime − the expert&apos;s stated fix time) × occurrences over the last 12 months. The cost per hour is your assumption.
+          {impact.confirmedFixes > 0 && (
+            <span className="ml-1 text-ok">
+              <BadgeCheck className="mb-0.5 inline h-3.5 w-3.5" /> {impact.confirmedFixes} fix{impact.confirmedFixes > 1 ? "es" : ""} already confirmed in the field, saving{" "}
+              {hours(impact.confirmedSavedMin)}.
+            </span>
+          )}
         </p>
       </Card>
+
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Link href="/manual">
+          <Card className="h-full transition-colors hover:border-accent/50">
+            <BookX className="h-5 w-5 text-accent" />
+            <div className="mt-2 font-semibold">Manual vs reality</div>
+            <p className="text-sm text-muted">{stories.reduce((a, s) => a + (s.extraction.manualCorrections?.length ?? 0), 0)} places where the experts correct the official manual.</p>
+          </Card>
+        </Link>
+        <Link href="/drill">
+          <Card className="h-full transition-colors hover:border-accent/50">
+            <GraduationCap className="h-5 w-5 text-accent" />
+            <div className="mt-2 font-semibold">Apprentice drill</div>
+            <p className="text-sm text-muted">The ghost quizzes juniors on the captured knowledge. Try it yourself.</p>
+          </Card>
+        </Link>
+        <Link href="/report">
+          <Card className="h-full transition-colors hover:border-accent/50">
+            <FileScan className="h-5 w-5 text-accent" />
+            <div className="mt-2 font-semibold">Handover report</div>
+            <p className="text-sm text-muted">One printable page for HR and the maintenance head, generated live.</p>
+          </Card>
+        </Link>
+      </div>
     </div>
   );
 }

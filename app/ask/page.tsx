@@ -8,8 +8,10 @@ import { Badge, Button, Card, Eyebrow, Select, SourceBadge, cn } from "@/compone
 import { postJson } from "@/lib/client";
 import { transcribeWithSarvam } from "@/lib/audio";
 import { guessFault } from "@/lib/offline";
+import { faultStats } from "@/lib/seed";
 import { PRIMARY_EXPERT, expertById, machineById } from "@/lib/seed";
 import { useStore } from "@/lib/store";
+import { useRecords } from "@/hooks/useRecords";
 import { toast } from "@/lib/toast";
 import type { AskResult, Lang, Source } from "@/lib/types";
 import { useRecorder } from "@/hooks/useRecorder";
@@ -33,6 +35,8 @@ export default function AskPage() {
   const answerLang = useStore((s) => s.answerLang);
   const setAnswerLang = useStore((s) => s.setAnswerLang);
   const enqueue = useStore((s) => s.enqueue);
+  const extraRecords = useStore((s) => s.extraRecords);
+  const records = useRecords();
   const speaker = useSpeaker(Boolean(status?.sarvam));
   const speech = useSpeechRecognition(answerLang);
   const rec = useRecorder();
@@ -49,11 +53,11 @@ export default function AskPage() {
     setError(null);
     speaker.stop();
     try {
-      const res = await postJson<AskResult>("/api/ask", { question: text, stories, answerLang, demo: demoMode });
+      const res = await postJson<AskResult>("/api/ask", { question: text, stories, answerLang, extraRecords, demo: demoMode });
       setTurns((t) => [{ question: text, result: res.data, source: res.source, note: res.note }, ...t]);
       setQuestion("");
       if (res.data.notCovered) {
-        const fault = guessFault(text);
+        const fault = guessFault(text, faultStats(records));
         enqueue({
           question: res.data.suggestedInterviewQuestion || `Raju, a junior asked: "${text}". What do you check first, and what's the real fix?`,
           faultCode: fault?.faultCode ?? "",

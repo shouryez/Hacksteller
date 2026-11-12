@@ -1,11 +1,24 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Check, RotateCcw } from "lucide-react";
 import { cn } from "./ui";
 
 /** Tap-to-tick procedure for the shop floor, with progress. */
-export function StepChecklist({ steps, size = "md" }: { steps: { text: string; meta?: string }[]; size?: "md" | "lg" }) {
+export function StepChecklist({
+  steps,
+  size = "md",
+  onProgress,
+}: {
+  steps: { text: string; meta?: string }[];
+  size?: "md" | "lg";
+  onProgress?: (done: number, total: number) => void;
+}) {
   const [done, setDone] = useState<Set<number>>(new Set());
+  const count = done.size;
+  useEffect(() => {
+    onProgress?.(count, steps.length);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [count, steps.length]);
   const toggle = (i: number) =>
     setDone((d) => {
       const n = new Set(d);
@@ -53,9 +66,6 @@ export function StepChecklist({ steps, size = "md" }: { steps: { text: string; m
           );
         })}
       </ol>
-      {steps.length > 0 && done.size === steps.length && (
-        <div className="no-print mt-3 rounded-lg border border-ok/40 bg-ok/10 px-3 py-2 text-sm text-ok">All steps done. Log the fix so the next person learns from it too.</div>
-      )}
     </div>
   );
 }

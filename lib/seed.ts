@@ -3,7 +3,8 @@ import machinesJson from "@/data/machines.json";
 import recordsJson from "@/data/fault_records.json";
 import storiesJson from "@/data/stories.json";
 import liveJson from "@/data/demo/live-story.json";
-import type { Expert, FaultRecord, Machine, Story, StoryExtraction } from "./types";
+import manualJson from "@/data/manual.json";
+import type { Expert, FaultRecord, Machine, ManualEntry, Story, StoryExtraction } from "./types";
 
 export const EXPERTS = expertsJson as Expert[];
 export const MACHINES = machinesJson as Machine[];
@@ -17,6 +18,12 @@ export const LIVE_DEMO = liveJson as {
   transcript: string;
   extraction: StoryExtraction;
 };
+
+export const MANUAL = manualJson as ManualEntry[];
+
+export function manualFor(code: string): ManualEntry | undefined {
+  return MANUAL.find((m) => m.faultCode === code);
+}
 
 export const PRIMARY_EXPERT = EXPERTS[0];
 

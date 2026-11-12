@@ -2,17 +2,21 @@
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Keyboard, Loader2, Mic, PlayCircle, RotateCcw, Sparkles, Square, TrendingUp } from "lucide-react";
+import { Check, CircleDashed, Keyboard, ListChecks, Loader2, Mic, PlayCircle, RotateCcw, Sparkles, Square, TrendingUp, Volume2 } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { toast } from "@/lib/toast";
 import { useStatus } from "@/hooks/useStatus";
 import { useRecorder } from "@/hooks/useRecorder";
+import { useRecords } from "@/hooks/useRecords";
+import { useSpeaker } from "@/hooks/useSpeaker";
 import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
 import { postJson } from "@/lib/client";
 import { saveAudio, transcribeWithSarvam } from "@/lib/audio";
+import { completeness } from "@/lib/completeness";
 import { computeCoverage, pct } from "@/lib/coverage";
 import { buildGraph, existingLabels } from "@/lib/graph";
-import { EXPERTS, LIVE_DEMO, MACHINES } from "@/lib/seed";
+import { machinesFor } from "@/lib/records";
+import { EXPERTS, LIVE_DEMO } from "@/lib/seed";
 import type { Lang, Source, Story, StoryExtraction } from "@/lib/types";
 import { ExtractionCard } from "./ExtractionCard";
 import { GraphLegend, KnowledgeGraph } from "./KnowledgeGraph";
@@ -43,6 +47,9 @@ export function CaptureStudio({
   const demoMode = useStore((s) => s.demoMode);
   const lang = useStore((s) => s.captureLang);
   const setLang = useStore((s) => s.setCaptureLang);
+  const extraRecords = useStore((s) => s.extraRecords);
+  const records = useRecords();
+  const speaker = useSpeaker(Boolean(status?.sarvam));
 
   const [expertId, setExpertId] = useState("raju");
   const [machineId, setMachineId] = useState(presetMachineId ?? "L-04");
@@ -61,6 +68,8 @@ export function CaptureStudio({
   const simAudioRef = useRef<HTMLAudioElement | null>(null);
   const simulatedRef = useRef(false);
   const storyIdRef = useRef<string | null>(null);
+  const followUpRef = useRef<{ question: string; prev: string; prevEnglish: string } | null>(null);
+  const [followUp, setFollowUp] = useState<string | null>(null);
 
   const [prevMachine, setPrevMachine] = useState(presetMachineId);
   if (presetMachineId !== prevMachine) {
@@ -68,7 +77,7 @@ export function CaptureStudio({
     if (presetMachineId) setMachineId(presetMachineId);
   }
 
-  const graph = useMemo(() => buildGraph(stories), [stories]);
+  const graph = useMemo(() => buildGraph(stories, records), [stories, records]);
   const highlight = useMemo(() => {
     if (!result) return undefined;
     return new Set(graph.nodes.filter((n) => n.storyIds.includes(result.story.id)).map((n) => n.id));
@@ -89,6 +98,7 @@ export function CaptureStudio({
         language: lang,
         existingLabels: existingLabels(stories),
         interviewQuestion: question,
+        extraRecords,
         demo: demoMode,
       });
       const id = storyIdRef.current ?? `story-${Date.now()}`;
@@ -111,8 +121,8 @@ export function CaptureStudio({
         extraction: res.data,
       };
       const current = useStore.getState().stories;
-      const before = computeCoverage(current.filter((s) => s.id !== id)).overall;
-      const after = computeCoverage([...current.filter((s) => s.id !== id), story]).overall;
+      const before = computeCoverage(current.filter((s) => s.id !== id), records).overall;
+      const after = computeCoverage([...current.filter((s) => s.id !== id), story], records).overall;
       addStory(story);
       setDelta({ before, after });
       toast(`Captured: ${res.data.title}`, {
@@ -128,8 +138,13 @@ export function CaptureStudio({
     }
   }
 
-  async function startRecording() {
-    resetRun();
+  async function startRecording(followUpQuestion?: string) {
+    speaker.stop();
+    if (followUpQuestion) {
+      followUpRef.current = { question: followUpQuestion, prev: transcript, prevEnglish: englishHint };
+      setFollowUp(followUpQuestion);
+      setError(null);
+    } else resetRun();
     const ok = await rec.start();
     if (!ok) {
       setError("Microphone unavailable. Allow mic access, or use “Type instead” / the rehearsed story.");
@@ -141,10 +156,13 @@ export function CaptureStudio({
   }
 
   async function stopRecording() {
-    if (simulatedRef.current) return finishSimulation();
+    if (simAudioRef.current) return finishSimulation();
     const blob = await rec.stop();
     speech.stop();
-    blobRef.current = blob;
+    const fu = followUpRef.current;
+    followUpRef.current = null;
+    setFollowUp(null);
+    if (!fu) blobRef.current = blob;
     const browserText = (speech.finalText + " " + speech.interim).trim();
     let text = browserText;
     let english = "";
@@ -163,8 +181,15 @@ export function CaptureStudio({
     if (!text) {
       setError("No speech was captured. Try again closer to the mic, or type the story instead.");
       setTyping(true);
-      setPhase("error");
+      setPhase(fu ? "done" : "error");
+      if (fu) toast("No speech was captured", { tone: "warn", description: "Try again, or type the answer into the transcript." });
       return;
+    }
+    if (fu) {
+      // A follow-up answer extends the same story instead of starting a new one.
+      const addition = (answer: string) => `\n\nFollow-up question: ${fu.question}\nAnswer: ${answer}`;
+      english = english || fu.prevEnglish ? (fu.prevEnglish || fu.prev) + addition(english || text) : "";
+      text = fu.prev + addition(text);
     }
     setTranscript(text);
     setEnglishHint(english);
@@ -212,6 +237,8 @@ export function CaptureStudio({
     blobRef.current = null;
     simulatedRef.current = false;
     storyIdRef.current = null;
+    followUpRef.current = null;
+    setFollowUp(null);
   }
 
   const busy = phase === "transcribing" || phase === "extracting";
@@ -232,7 +259,7 @@ export function CaptureStudio({
               label="Machine"
               value={machineId}
               onChange={setMachineId}
-              options={MACHINES.map((m) => ({ value: m.id, label: `${m.id} · ${m.name.split(" ").slice(0, -1).join(" ")}` }))}
+              options={machinesFor(records).map((m) => ({ value: m.id, label: m.name === m.id ? m.id : `${m.id} · ${m.name.split(" ").slice(0, -1).join(" ")}` }))}
             />
             <Select label="Spoken language" value={lang} onChange={(v) => setLang(v as Lang)} options={LANGS} />
           </div>
@@ -258,14 +285,15 @@ export function CaptureStudio({
             )}
             <div className="flex h-8 items-end gap-1">
               {Array.from({ length: 24 }).map((_, i) => {
-                const lvl = phase === "recording" ? (simulatedRef.current ? 0.3 + 0.5 * Math.abs(Math.sin(Date.now() / 200 + i)) : rec.level) : 0.05;
+                const lvl = phase === "recording" ? (simAudioRef.current ? 0.3 + 0.5 * Math.abs(Math.sin(Date.now() / 200 + i)) : rec.level) : 0.05;
                 const h = Math.max(3, lvl * 32 * (0.5 + 0.5 * Math.abs(Math.sin(i * 1.7))));
                 return <span key={i} className={cn("w-1.5 rounded-full", phase === "recording" ? "bg-bad" : "bg-line")} style={{ height: h }} />;
               })}
             </div>
             <div className="text-sm text-muted">
               {phase === "idle" && "Tap the mic and tell the story the way you'd tell a new apprentice."}
-              {phase === "recording" && (simulatedRef.current ? "Playing the rehearsed recording…" : `Recording · ${rec.seconds}s · tap to stop`)}
+              {phase === "recording" &&
+                (simAudioRef.current ? "Playing the rehearsed recording…" : followUp ? `Recording follow-up · ${rec.seconds}s · tap to stop` : `Recording · ${rec.seconds}s · tap to stop`)}
               {phase === "transcribing" && "Sarvam is transcribing the recording…"}
               {phase === "extracting" && "Structuring the knowledge: symptoms → causes → fixes…"}
               {phase === "done" && "Captured. Record another, or open the guide."}
@@ -337,6 +365,16 @@ export function CaptureStudio({
           </Card>
         )}
 
+        {result && phase !== "extracting" && (
+          <CompletenessCard
+            story={result.story}
+            busy={busy || phase === "recording"}
+            speaking={speaker.speaking}
+            onAskAloud={(q) => (speaker.speaking ? speaker.stop() : void speaker.speak(q, "en-IN", "priya"))}
+            onAnswer={(q) => void startRecording(q)}
+          />
+        )}
+
         {result && (
           <>
             <ExtractionCard story={result.story} source={result.source} note={result.note} />
@@ -366,5 +404,62 @@ export function CaptureStudio({
         <GraphLegend />
       </div>
     </div>
+  );
+}
+
+/** Shows what the explanation still lacks and lets the interviewer ask for it. */
+function CompletenessCard({
+  story,
+  busy,
+  speaking,
+  onAskAloud,
+  onAnswer,
+}: {
+  story: Story;
+  busy: boolean;
+  speaking: boolean;
+  onAskAloud: (q: string) => void;
+  onAnswer: (q: string) => void;
+}) {
+  const { checks, done, total } = completeness(story.extraction);
+  const missing = checks.filter((c) => !c.ok);
+  return (
+    <Card className={cn("space-y-3", missing.length ? "border-warn/40" : "border-ok/40")}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <Eyebrow className="flex items-center gap-1.5">
+          <ListChecks className="h-3.5 w-3.5" /> Completeness check
+        </Eyebrow>
+        <Badge tone={missing.length ? "warn" : "ok"}>
+          {done}/{total} {missing.length ? "· follow up to fill the gaps" : "· complete"}
+        </Badge>
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        {checks.map((c) => (
+          <span
+            key={c.key}
+            className={cn(
+              "inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs",
+              c.ok ? "border-ok/40 bg-ok/10 text-ok" : "border-warn/40 bg-warn/10 text-warn",
+            )}
+          >
+            {c.ok ? <Check className="h-3 w-3" /> : <CircleDashed className="h-3 w-3" />} {c.label}
+          </span>
+        ))}
+      </div>
+      {missing.map((c) => (
+        <div key={c.key} className="flex flex-wrap items-center gap-2 rounded-lg border border-line bg-panel2 p-3">
+          <div className="min-w-0 flex-1 text-sm">
+            <span className="text-muted">Missing {c.label.toLowerCase()}. Ask: </span>
+            &ldquo;{c.followUp}&rdquo;
+          </div>
+          <Button size="sm" variant="ghost" onClick={() => onAskAloud(c.followUp)} disabled={busy}>
+            <Volume2 className="h-4 w-4" /> {speaking ? "Stop" : "Ask aloud"}
+          </Button>
+          <Button size="sm" onClick={() => onAnswer(c.followUp)} disabled={busy}>
+            <Mic className="h-4 w-4" /> Record answer
+          </Button>
+        </div>
+      ))}
+    </Card>
   );
 }

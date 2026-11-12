@@ -2,13 +2,19 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { SEED_STORIES } from "./seed";
-import type { Guide, Lang, QueuedQuestion, Source, Story } from "./types";
+import type { FaultRecord, Guide, Lang, QueuedQuestion, Source, Story } from "./types";
 
 type GuideCacheEntry = { key: string; guide: Guide; source: Source };
 export type GapQuestion = { question: string; why: string; source: Source };
 
 type State = {
   stories: Story[];
+  /** Imported fault records and fixes logged through guides (the seed log is bundled separately). */
+  extraRecords: FaultRecord[];
+  drillBest: number;
+  addRecords: (r: FaultRecord[]) => number;
+  logFix: (r: Omit<FaultRecord, "recordId" | "origin" | "viaGuide">) => FaultRecord;
+  setDrillBest: (n: number) => void;
   queue: QueuedQuestion[];
   gapQuestions: Record<string, GapQuestion>;
   guideCache: Record<string, GuideCacheEntry>;
@@ -35,6 +41,8 @@ type State = {
 
 const initial = () => ({
   stories: SEED_STORIES,
+  extraRecords: [] as FaultRecord[],
+  drillBest: 0,
   queue: [] as QueuedQuestion[],
   gapQuestions: {} as Record<string, GapQuestion>,
   guideCache: {} as Record<string, GuideCacheEntry>,
@@ -51,6 +59,22 @@ export const useStore = create<State>()(
       costPerHour: 25000,
       presenterOpen: false,
       setCostPerHour: (costPerHour) => set({ costPerHour }),
+      addRecords: (incoming) => {
+        let added = 0;
+        set((st) => {
+          const ids = new Set(st.extraRecords.map((x) => x.recordId));
+          const fresh = incoming.filter((x) => !ids.has(x.recordId));
+          added = fresh.length;
+          return { extraRecords: [...st.extraRecords, ...fresh] };
+        });
+        return added;
+      },
+      logFix: (r) => {
+        const record: FaultRecord = { ...r, recordId: `GW-${Date.now().toString(36).toUpperCase()}`, origin: "logged", viaGuide: true };
+        set((st) => ({ extraRecords: [...st.extraRecords, record] }));
+        return record;
+      },
+      setDrillBest: (n) => set((st) => ({ drillBest: Math.max(st.drillBest, n) })),
       setPresenterOpen: (presenterOpen) => set({ presenterOpen }),
       importStories: (incoming) => {
         let added = 0;
@@ -79,7 +103,7 @@ export const useStore = create<State>()(
       reset: () => set({ ...initial() }),
     }),
     {
-      name: "ghostwrench-v1",
+      name: "ghostwrench-v2",
       storage: createJSONStorage(() => localStorage),
       skipHydration: true,
       partialize: (st) => {

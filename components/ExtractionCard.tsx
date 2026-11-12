@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { AlertTriangle, Lightbulb, Wrench } from "lucide-react";
+import { AlertTriangle, BookX, Lightbulb, Wrench } from "lucide-react";
 import { expertById, machineById } from "@/lib/seed";
 import type { Source, Story } from "@/lib/types";
 import { AudioClip } from "./AudioClip";
@@ -86,6 +86,19 @@ export function ExtractionCard({ story, source, note }: { story: Story; source?:
               <div className="font-medium">{t.text}</div>
               <div className="mt-0.5 italic text-muted">&ldquo;{t.quote}&rdquo;</div>
             </blockquote>
+          ))}
+        </div>
+      )}
+      {(x.manualCorrections?.length ?? 0) > 0 && (
+        <div className="space-y-2">
+          <Eyebrow className="flex items-center gap-1.5">
+            <BookX className="h-3.5 w-3.5 text-accent" /> Corrects the manual
+          </Eyebrow>
+          {x.manualCorrections!.map((c, i) => (
+            <div key={i} className="grid gap-2 text-sm sm:grid-cols-2">
+              <div className="rounded-lg border border-line bg-panel2 px-3 py-2 text-muted line-through decoration-bad/60">{c.manualSays}</div>
+              <div className="rounded-lg border border-accent/40 bg-accent/5 px-3 py-2">{c.expertSays}</div>
+            </div>
           ))}
         </div>
       )}

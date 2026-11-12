@@ -1,0 +1,11 @@
+[
+  { "faultCode": "E-217", "machineId": "L-04", "source": "L-04 Maintenance Manual §7.3 Spindle alarms", "says": ["Press RESET and resume the cycle.", "If the alarm repeats, inspect the spindle bearings for wear.", "Check spindle drive belt tension.", "Contact service if the alarm persists."] },
+  { "faultCode": "E-311", "machineId": "L-04", "source": "L-04 Maintenance Manual §9.1 Servo alarms", "says": ["Allow the drive to cool for 30 minutes.", "Check that the cabinet cooling fan is running.", "Inspect the servo drive unit and replace it if faulty.", "Preventive: clean the cabinet air filter every 3 months."] },
+  { "faultCode": "E-105", "machineId": "L-04", "source": "L-04 Maintenance Manual §6.4 Tool changer", "says": ["Re-home the turret.", "Check the turret index sensor cable.", "Contact service."] },
+  { "faultCode": "H-102", "machineId": "HP-02", "source": "HP-02 Service Manual §4.2 Pressure faults", "says": ["Check the oil level.", "Inspect the pump for wear; replace the pump if pressure cannot be restored.", "Check the relief valve setting against the pressure gauge."] },
+  { "faultCode": "H-220", "machineId": "HP-02", "source": "HP-02 Service Manual §4.6 Oil temperature", "says": ["Stop the press and allow the oil to cool.", "Check the oil cooler.", "Replace the hydraulic oil if degraded."] },
+  { "faultCode": "Q-330", "machineId": "IM-07", "source": "IM-07 Process Guide §3.1 Short shots", "says": ["Increase injection pressure or shot size.", "Raise barrel temperature by 5 to 10 °C.", "Dry hygroscopic material for 4 hours at the recommended temperature."] },
+  { "faultCode": "Q-410", "machineId": "IM-07", "source": "IM-07 Process Guide §3.4 Flash", "says": ["Reduce injection pressure.", "Increase clamp force.", "Inspect the mould parting surfaces."] },
+  { "faultCode": "C-045", "machineId": "CV-01", "source": "CV-01 Operating Manual §5.2 Belt tracking", "says": ["Adjust the tracking idler until the belt runs centred.", "Check belt tension.", "Reset the misalignment sensor."] },
+  { "faultCode": "C-090", "machineId": "CV-01", "source": "CV-01 Operating Manual §5.5 Drive faults", "says": ["Reset the overload relay.", "Check for belt obstruction.", "Check the motor current."] }
+]

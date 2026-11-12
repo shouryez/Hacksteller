@@ -44,3 +44,9 @@ body {
   .print-plain { background: #fff !important; color: #000 !important; border-color: #ccc !important; box-shadow: none !important; }
   .print-plain * { color: #000 !important; }
 }
+
+@keyframes alarm-glow {
+  0%, 100% { box-shadow: 0 0 40px -12px rgba(239, 68, 68, 0.5); }
+  50% { box-shadow: 0 0 90px -6px rgba(239, 68, 68, 0.95); }
+}
+.alarm-frame { animation: alarm-glow 1.2s ease-in-out infinite; }

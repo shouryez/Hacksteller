@@ -10,6 +10,7 @@ import { offlineInterview } from "@/lib/offline";
 import { hours, machineById } from "@/lib/seed";
 import { useStore, type GapQuestion } from "@/lib/store";
 import { useStatus } from "@/hooks/useStatus";
+import { useRecords } from "@/hooks/useRecords";
 import { useSpeaker } from "@/hooks/useSpeaker";
 import type { InterviewQuestion } from "@/lib/types";
 
@@ -37,7 +38,8 @@ function Interview() {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<Item | null>(null);
 
-  const cov = useMemo(() => computeCoverage(stories), [stories]);
+  const records = useRecords();
+  const cov = useMemo(() => computeCoverage(stories, records), [stories, records]);
   const fallback = useMemo(() => offlineInterview(cov.gaps, []).questions, [cov.gaps]);
 
   const items: Item[] = useMemo(() => {

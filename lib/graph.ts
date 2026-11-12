@@ -1,4 +1,6 @@
-import { EXPERTS, MACHINES, faultStats } from "./seed";
+import { machinesFor } from "./records";
+import { EXPERTS, FAULT_RECORDS, faultStats } from "./seed";
+import type { FaultRecord } from "./types";
 import type { Story } from "./types";
 
 export type NodeType = "machine" | "fault" | "symptom" | "cause" | "fix" | "tool" | "expert";
@@ -32,7 +34,7 @@ const norm = (s: string) =>
     .trim();
 
 /** Derives the knowledge graph from stories plus fault records (gaps show as hollow fault nodes). */
-export function buildGraph(stories: Story[]): { nodes: GNode[]; links: GLink[] } {
+export function buildGraph(stories: Story[], records: FaultRecord[] = FAULT_RECORDS): { nodes: GNode[]; links: GLink[] } {
   const nodes = new Map<string, GNode>();
   const links = new Map<string, GLink>();
 
@@ -52,8 +54,8 @@ export function buildGraph(stories: Story[]): { nodes: GNode[]; links: GLink[] }
     links.set(`${source}->${target}`, { source, target, type });
   };
 
-  for (const m of MACHINES) addNode({ id: `machine:${m.id}`, type: "machine", label: m.name, machineId: m.id });
-  for (const f of faultStats()) {
+  for (const m of machinesFor(records)) addNode({ id: `machine:${m.id}`, type: "machine", label: m.name, machineId: m.id });
+  for (const f of faultStats(records)) {
     addNode({ id: `fault:${f.faultCode}`, type: "fault", label: `${f.faultCode} ${f.description}`, machineId: f.machineId, gap: true });
     addLink(`machine:${f.machineId}`, `fault:${f.faultCode}`, "has-fault");
   }

@@ -4,12 +4,15 @@ import { GraphLegend, KnowledgeGraph } from "@/components/KnowledgeGraph";
 import { AudioClip } from "@/components/AudioClip";
 import { Badge, Card, Eyebrow, cn } from "@/components/ui";
 import { buildGraph, type GNode } from "@/lib/graph";
-import { MACHINES, expertById } from "@/lib/seed";
+import { useRecords } from "@/hooks/useRecords";
+import { machinesFor } from "@/lib/records";
+import { expertById } from "@/lib/seed";
 import { useStore } from "@/lib/store";
 
 export default function GraphPage() {
   const stories = useStore((s) => s.stories);
-  const graph = useMemo(() => buildGraph(stories), [stories]);
+  const records = useRecords();
+  const graph = useMemo(() => buildGraph(stories, records), [stories, records]);
   const [filter, setFilter] = useState<string | undefined>();
   const [selected, setSelected] = useState<GNode | null>(null);
   const linked = selected ? stories.filter((s) => selected.storyIds.includes(s.id)) : [];
@@ -22,7 +25,7 @@ export default function GraphPage() {
           <h1 className="mt-1 text-2xl font-semibold">How the factory&apos;s repair knowledge connects</h1>
         </div>
         <div className="flex flex-wrap gap-1.5">
-          {[undefined, ...MACHINES.map((m) => m.id)].map((id) => (
+          {[undefined, ...machinesFor(records).map((m) => m.id)].map((id) => (
             <button
               key={id ?? "all"}
               onClick={() => setFilter(id)}
