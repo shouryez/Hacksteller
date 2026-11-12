@@ -178,7 +178,7 @@ Small pop-ups in the bottom-right ("toasts") confirm actions, e.g. "Captured: â€
 **Header card:**
 - Machine, fault code and name, a short overview.
 - Badges: times in 12 months, downtime, last seen, **~minutes to fix**, **Confirmed in the field Ã—N** (after fixes are logged), source.
-- **QR code:** tap to make it big. **The whole guide is packed inside the QR**: a phone that scans it opens the steps without any app, login or database (`/g` page, with a tick-off list). Phone scanning needs the deployed version, not localhost.
+- **QR code:** tap to make it big. **The whole guide is packed inside the QR**: a phone that scans it opens the steps without any app, login or database (`/g` page, with a tick-off list). On a laptop the QR uses the laptop's Wi-Fi address, so the phone must be on the same Wi-Fi; if several addresses exist, the enlarged QR lets you pick another one.
 
 **If no one has explained it:** red card with "No one has explained this fault yet", what the log says, **"All the manual offers"** (the weak official instructions), and **Interview Raju about E-xxx**.
 

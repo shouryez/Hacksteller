@@ -25,6 +25,8 @@ npm run dev                  # http://localhost:3000  (use Chrome for voice)
 
 The header shows which engines are configured (Gemini / Claude / Offline brain, Sarvam / Browser voice); each answer's badge shows which one actually answered. **Demo Mode** (header toggle) skips all live AI calls. Use it if the venue Wi-Fi dies.
 
+**Guide QR codes on a laptop:** they automatically use this computer's Wi-Fi address instead of `localhost`, so a phone on the same Wi-Fi can open them. To point them somewhere else (for example your Vercel URL), set `PUBLIC_URL=https://your-site` in `.env.local`.
+
 ### Deploy (Vercel)
 Import the repo in Vercel, add the two env vars, and deploy. The HTTPS URL is required for the microphone on phones, and the guide QR codes point to it.
 

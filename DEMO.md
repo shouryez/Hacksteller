@@ -39,7 +39,7 @@ That's PS-15: capture spoken knowledge → connect to fault records → searchab
 | 10 | **Drill** | Hand a judge the mouse → **Start the drill** | "Would *you* fix it the way Raju would?" | Quiz with real traps from the manual |
 | 11 | Footer → **Handover report** | Scroll it | "Every factory has a Raju. His last day shouldn't be the day his knowledge dies." | One-page printable report |
 
-\* The QR opens on a phone only when the app is deployed (Vercel). On localhost, skip the scan and just show the QR.
+\* On a laptop, the QR uses the laptop's Wi-Fi address, so the **phone must be on the same Wi-Fi** (a phone hotspot that the laptop also joins works well). If it doesn't open, pick another address in the enlarged QR, or allow Node.js through the Windows firewall. On a deployed site (Vercel) it works from anywhere.
 
 **Short on time?** Do steps 2, 4, 6, 7, 8 — that's the core loop.
 

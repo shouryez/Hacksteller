@@ -14,6 +14,7 @@ import { useStore } from "@/lib/store";
 import { toast } from "@/lib/toast";
 import { useAlarm } from "@/lib/alarm";
 import { useRecords } from "@/hooks/useRecords";
+import { useQrBase } from "@/hooks/useQrBase";
 import { useStatus } from "@/hooks/useStatus";
 import type { Guide, Source } from "@/lib/types";
 
@@ -29,6 +30,7 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
   const [merging, setMerging] = useState(false);
   const [qrUrl, setQrUrl] = useState<string | null>(null);
   const [qrBig, setQrBig] = useState(false);
+  const qr = useQrBase();
   const allRecords = useRecords();
   const extraRecords = useStore((s) => s.extraRecords);
   const logFix = useStore((s) => s.logFix);
@@ -88,26 +90,45 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
 
   // The QR carries the whole guide (compressed) so it opens on any phone, offline, without our database.
   useEffect(() => {
-    if (!guide) return setQrUrl(null);
-    deflateToBase64Url(JSON.stringify(toShared(guide, machine?.name ?? ""))).then((d) => setQrUrl(`${window.location.origin}/g#${d}`));
-  }, [guide, machine?.name]);
+    if (!guide || !qr.base) return setQrUrl(null);
+    deflateToBase64Url(JSON.stringify(toShared(guide, machine?.name ?? ""))).then((d) => setQrUrl(`${qr.base}/g#${d}`));
+  }, [guide, machine?.name, qr.base]);
 
   return (
     <div className="space-y-5">
       {qrBig && qrUrl && (
-        <button
-          onClick={() => setQrBig(false)}
-          className="no-print fixed inset-0 z-50 grid place-items-center bg-black/85 p-6"
-          aria-label="Close QR code"
-        >
-          <div className="rounded-2xl bg-white p-6 text-center text-black">
-            <QRCodeSVG value={qrUrl} size={Math.min(560, typeof window === "undefined" ? 480 : window.innerHeight - 160)} level="L" marginSize={2} />
-            <div className="mt-3 text-lg font-semibold">
-              Scan with your phone camera: {code} guide
-            </div>
-            <div className="text-sm text-gray-600">The whole guide is inside the code. No app, no login, no internet needed to read it.</div>
+        <div onClick={() => setQrBig(false)} className="no-print fixed inset-0 z-50 grid place-items-center bg-black/85 p-6" role="dialog" aria-label="QR code">
+          <div onClick={(e) => e.stopPropagation()} className="relative max-w-[92vw] rounded-2xl bg-white p-6 text-center text-black">
+            <button onClick={() => setQrBig(false)} className="absolute right-3 top-2 text-2xl leading-none text-gray-500 hover:text-black" aria-label="Close QR code">
+              ×
+            </button>
+            <QRCodeSVG value={qrUrl} size={Math.min(520, typeof window === "undefined" ? 480 : window.innerHeight - 230)} level="L" marginSize={2} />
+            <div className="mt-3 text-lg font-semibold">Scan with your phone camera: {code} guide</div>
+            {qr.lan ? (
+              <div className="mx-auto mt-1 max-w-md text-sm text-gray-600">
+                Opens <span className="font-mono">{qr.base}</span>. The phone must be on the <b>same Wi-Fi</b> as this laptop.
+                {qr.options.length > 1 && (
+                  <div className="mt-2">
+                    Not opening? Try another address:{" "}
+                    <select
+                      value={qr.chosen ?? ""}
+                      onChange={(e) => qr.choose(e.target.value)}
+                      className="rounded border border-gray-300 px-2 py-1 font-mono text-sm"
+                    >
+                      {qr.options.map((ip) => (
+                        <option key={ip} value={ip}>
+                          {ip}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-sm text-gray-600">The whole guide is inside the code. No app, no login needed to read it.</div>
+            )}
           </div>
-        </button>
+        </div>
       )}
       <div className="no-print flex flex-wrap items-center justify-between gap-3">
         <Link href="/guides" className="text-sm text-muted hover:text-text">
@@ -163,7 +184,7 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
             <button onClick={() => setQrBig(true)} className="rounded-xl bg-white p-3 text-center text-black" title="Enlarge to scan">
               <QRCodeSVG value={qrUrl} size={190} level="L" marginSize={1} />
               <div className="mt-1 flex items-center justify-center gap-1 text-[11px] font-medium">
-                <QrCode className="h-3 w-3" /> Tap to enlarge · works offline
+                <QrCode className="h-3 w-3" /> Tap to enlarge{qr.lan ? " · same Wi-Fi" : ""}
               </div>
             </button>
           )}

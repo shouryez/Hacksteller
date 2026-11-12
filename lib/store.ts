@@ -23,6 +23,8 @@ type State = {
   captureLang: Lang;
   hydrated: boolean;
   costPerHour: number;
+  qrHost: string | null;
+  setQrHost: (ip: string) => void;
   presenterOpen: boolean;
   setCostPerHour: (n: number) => void;
   setPresenterOpen: (v: boolean) => void;
@@ -57,6 +59,8 @@ export const useStore = create<State>()(
       captureLang: "en-IN",
       hydrated: false,
       costPerHour: 25000,
+      qrHost: null,
+      setQrHost: (qrHost) => set({ qrHost }),
       presenterOpen: false,
       setCostPerHour: (costPerHour) => set({ costPerHour }),
       addRecords: (incoming) => {
