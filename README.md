@@ -12,6 +12,7 @@ The full build plan and pitch strategy are in [PLAN.md](PLAN.md). **How to prese
 npm install
 cp .env.example .env.local   # add keys (both optional)
 npm run dev                  # http://localhost:3000  (use Chrome for voice)
+npm run dev:sync             # same, but auto-pulls new commits from GitHub every 20 s (restarts itself if needed)
 ```
 
 | Key | What it unlocks | Without it |
