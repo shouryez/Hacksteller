@@ -36,16 +36,16 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
   const source: Source | undefined = fresh?.source ?? (local ? "offline" : undefined);
   const linked = stories.filter((s) => s.extraction.faultCodes.includes(code));
 
-  // Let Claude merge multi-story guides into one clean procedure (cached per set of stories).
+  // Let the AI merge multi-story guides into one clean procedure (cached per set of stories).
   useEffect(() => {
-    if (!hydrated || !local || fresh || !status?.claude || demoMode) return;
+    if (!hydrated || !local || fresh || !status?.ai || demoMode) return;
     setMerging(true);
     postJson<Guide>("/api/guide", { faultCode: code, stories, demo: demoMode })
       .then((res) => cacheGuide(code, { key, guide: res.data, source: res.source }))
       .catch(() => {})
       .finally(() => setMerging(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hydrated, key, status?.claude, demoMode]);
+  }, [hydrated, key, status?.ai, demoMode]);
 
   // The QR carries the whole guide (compressed) so it opens on any phone, offline, without our database.
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
         <div className="flex gap-2">
           {merging && (
             <Badge tone="info">
-              <Loader2 className="h-3 w-3 animate-spin" /> Claude is merging stories…
+              <Loader2 className="h-3 w-3 animate-spin" /> AI is merging stories…
             </Badge>
           )}
           {guide && (

@@ -1,4 +1,4 @@
-import { callClaude } from "@/lib/claude";
+import { callLLM } from "@/lib/llm";
 import { offlineInterview } from "@/lib/offline";
 import { INTERVIEW_SYSTEM } from "@/lib/prompts";
 import { withFallback } from "@/lib/route-helpers";
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 
   return withFallback<{ questions: InterviewQuestion[] }>(
     Boolean(body.demo),
-    () => callClaude({ system: INTERVIEW_SYSTEM, user, schema: InterviewSchema, effort: "low" }),
+    () => callLLM({ system: INTERVIEW_SYSTEM, user, schema: InterviewSchema, effort: "low", thinking: "off", timeoutMs: 15_000, deadlineMs: 25_000 }),
     () => offlineInterview(gaps, junior),
   );
 }

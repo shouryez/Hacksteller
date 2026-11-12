@@ -16,10 +16,14 @@ npm run dev                  # http://localhost:3000  (use Chrome for voice)
 
 | Key | What it unlocks | Without it |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | Claude (`claude-opus-5-5`) structures any story, answers any question, writes interview questions, and merges guides | The **offline brain** handles it: rehearsed and seed stories extract perfectly, and Ask uses keyword retrieval with honest "not covered" refusals (Sarvam translates its answers into Hindi/Kannada when that key is set) |
-| `SARVAM_API_KEY` | Sarvam Saaras v3 speech-to-text (Hindi, Kannada, code-mixed) and Bulbul v3 voices (Raju's ghost speaks in an Indian voice, including Kannada/Hindi answers) | The browser's Web Speech API and `speechSynthesis` |
+| `GEMINI_API_KEY` | **Primary AI.** Gemini structures any story, answers any question, writes interview questions and merges guides. It tries `gemini-2.5-flash` → `2.5-flash-lite` → `flash-latest` → `3.8-flash`, skipping models that are rate-limited or overloaded | — |
+| `ANTHROPIC_API_KEY` | Alternative AI (Claude `claude-opus-5-5`), used only when no Gemini key is set | — |
+| *(no AI key, or AI fails)* | The **offline brain** answers: rehearsed and seed stories extract perfectly, and Ask uses keyword retrieval with honest "not covered" refusals | |
+| `SARVAM_API_KEY` | Sarvam Saaras v3 speech-to-text (Hindi, Kannada, code-mixed), translation, and Bulbul v3 voices (Raju's ghost speaks in an Indian voice) | The browser's Web Speech API and `speechSynthesis` |
 
-The header shows which engines are live. **Demo Mode** (header toggle) skips all live AI calls. Use it if the venue Wi-Fi dies.
+**Free Gemini keys have a small daily request cap per model** (it resets at midnight Pacific, 1:30 PM IST). When it runs out the app silently falls back to the offline brain; hover the "Offline brain ⓘ" badge to see why. For judging day, enable billing on the key's Google Cloud project, or keep rehearsals to Demo Mode.
+
+The header shows which engines are configured (Gemini / Claude / Offline brain, Sarvam / Browser voice); each answer's badge shows which one actually answered. **Demo Mode** (header toggle) skips all live AI calls. Use it if the venue Wi-Fi dies.
 
 ### Deploy (Vercel)
 Import the repo in Vercel, add the two env vars, and deploy. The HTTPS URL is required for the microphone on phones, and the guide QR codes point to it.
@@ -63,7 +67,7 @@ npm run lint && npm test && npm run build
 ```
 Voice ─▶ Web Speech (live captions) + MediaRecorder
       ─▶ Sarvam Saaras v3 (chunks < 30 s, transcribe + translate)
-      ─▶ /api/extract ─ Claude structured output ─▶ Story {symptoms, causes, fixes, tools, safety, tribal tips}
+      ─▶ /api/extract ─ Gemini structured JSON ─▶ Story {symptoms, causes, fixes, tools, safety, tribal tips}
                                                     │
 fault_records.csv ─▶ coverage (downtime-weighted) ◀─┤─▶ knowledge graph (react-force-graph)
                                                     ├─▶ /api/ask      ─▶ answer + cited stories + original audio ─▶ Bulbul v3 voice
@@ -80,7 +84,8 @@ fault_records.csv ─▶ coverage (downtime-weighted) ◀─┤─▶ knowledge 
 |---|---|
 | `app/` | Pages: radar `/`, `/capture`, `/interview`, `/ask`, `/guides`, `/guides/[code]`, `/graph`, `/g` (QR phone view) and `app/api/*` routes |
 | `components/CaptureStudio.tsx` | Record → transcribe → extract → graph + coverage delta |
-| `lib/claude.ts`, `lib/prompts.ts`, `lib/schemas.ts` | Claude calls (structured outputs via Zod, server-side refusal fallback) |
+| `lib/llm.ts`, `lib/gemini.ts`, `lib/claude.ts` | Provider switch; Gemini JSON-schema calls with model chain, timeouts and cooldowns; Claude alternative |
+| `lib/prompts.ts`, `lib/schemas.ts` | Prompts and Zod schemas shared by both providers |
 | `lib/sarvam.ts`, `lib/audio.ts` | Sarvam STT/TTS, WAV chunking, IndexedDB audio |
 | `lib/offline.ts` | Offline brain |
 | `lib/impact.ts` | Avoidable / at-risk downtime and ₹ impact |

@@ -81,7 +81,7 @@ export type Guide = {
   estMinutes: number;
 };
 
-export type Source = "claude" | "offline" | "demo";
+export type Source = "gemini" | "claude" | "offline" | "demo";
 
 export type ApiEnvelope<T> = { data: T; source: Source; note?: string };
 

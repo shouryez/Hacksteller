@@ -51,7 +51,7 @@ export function CaptureStudio({
   const [englishHint, setEnglishHint] = useState("");
   const [typing, setTyping] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<{ story: Story; source: Source } | null>(null);
+  const [result, setResult] = useState<{ story: Story; source: Source; note?: string } | null>(null);
   const [delta, setDelta] = useState<{ before: number; after: number } | null>(null);
   const [simText, setSimText] = useState<string | null>(null);
 
@@ -119,7 +119,7 @@ export function CaptureStudio({
         description:
           after > before + 0.005 ? `Knowledge coverage ${pct(before)} → ${pct(after)}` : `${res.data.fixes.length} fixes, ${res.data.tribalTips.length} tribal tips`,
       });
-      setResult({ story, source: res.source });
+      setResult({ story, source: res.source, note: res.note });
       setPhase("done");
       onSaved?.(story);
     } catch (e) {
@@ -339,7 +339,7 @@ export function CaptureStudio({
 
         {result && (
           <>
-            <ExtractionCard story={result.story} source={result.source} />
+            <ExtractionCard story={result.story} source={result.source} note={result.note} />
             <div className="flex flex-wrap gap-2">
               {result.story.extraction.faultCodes.map((c) => (
                 <Link key={c} href={`/guides/${c}`}>

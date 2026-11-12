@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { callClaude } from "@/lib/claude";
+import { callLLM } from "@/lib/llm";
 import { buildGuide } from "@/lib/guide";
 import { GUIDE_SYSTEM } from "@/lib/prompts";
 import { badRequest, withFallback } from "@/lib/route-helpers";
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
   return withFallback<Guide>(
     Boolean(body.demo),
-    async () => ({ ...(await callClaude({ system: GUIDE_SYSTEM, user, schema: GuideSchema, effort: "medium" })), faultCode: code }),
+    async () => ({ ...(await callLLM({ system: GUIDE_SYSTEM, user, schema: GuideSchema, effort: "medium", timeoutMs: 30_000, deadlineMs: 45_000 })), faultCode: code }),
     () => offline,
   );
 }

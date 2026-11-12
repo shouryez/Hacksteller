@@ -92,9 +92,14 @@ export function Select({
   );
 }
 
-export function SourceBadge({ source }: { source?: string }) {
+export function SourceBadge({ source, note }: { source?: string; note?: string }) {
   if (!source) return null;
+  if (source === "gemini") return <Badge tone="info">Gemini</Badge>;
   if (source === "claude") return <Badge tone="info">Claude</Badge>;
   if (source === "demo") return <Badge tone="warn">Demo Mode</Badge>;
-  return <Badge tone="neutral">Offline brain</Badge>;
+  return (
+    <span title={note ? `Answered offline because: ${note}` : "Answered by the offline brain"}>
+      <Badge tone="neutral">Offline brain{note ? " ⓘ" : ""}</Badge>
+    </span>
+  );
 }

@@ -213,7 +213,7 @@ export function offlineAsk(question: string, stories: Story[]): AskResult {
   const machine = machineById(s.machineId);
   return {
     spokenAnswer: `${expertName(s.expertId)} explained this one for ${machine?.name ?? s.machineId}. ${x.summary}${
-      tip ? ` His tip: ${tip.text}.` : ""
+      tip && !x.summary.includes(tip.text.slice(0, 40)) ? ` Tip: ${tip.text.replace(/[.…]+$/, "")}.` : ""
     }`,
     safetyWarnings: [...new Set(fixes.flatMap((f) => f.safety))],
     steps: fixes.flatMap((f) => f.steps).slice(0, 10),
@@ -229,7 +229,7 @@ const IMPERATIVE =
   /\b(check|clean|tighten|bleed|replace|top up|turn|wait|remove|switch off|lock ?out|open|close|bring|take|blow|wash|reduce|inspect|adjust|scrape|refit|set|measure|drain|grease|restart|give)\b/i;
 const CAUSAL = /\b(because|means|is the problem|the problem is|happens|cause|due to|that is|it's the|comes from)\b/i;
 const SYMPTOM = /\b(when|if|comes|noise|sound|slow|alarm|trips?|drift|hot|leak|vibrat|smell|not filling|short)\b/i;
-const SAFETY = /\b(lock ?out|switch off|isolat|careful|burn|shock|pressure|capacitor|never .*hot|wait .* minutes)\b/i;
+const SAFETY = /\b(lock ?out|tag ?out|switch off|isolat|careful|burn|shock|stored pressure|pressuri[sz]ed|capacitor|never .*hot|wait .* minutes|hand (in|there|inside))/i;
 const TIP = /\b(don't|do not|never|always|manual|trust|no need|most of the time|ninety percent|half the time|young fellows|people)\b/i;
 const TOOLS = [
   "allen key",

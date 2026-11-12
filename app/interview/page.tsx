@@ -58,7 +58,7 @@ function Interview() {
     return [...junior, ...gaps];
   }, [queue, cov.gaps, gapQuestions, fallback]);
 
-  // Ask Claude once for better-worded questions about gaps we haven't phrased yet.
+  // Ask the AI once for better-worded questions about gaps we haven't phrased yet.
   const missing = cov.gaps.filter((g) => !gapQuestions[g.faultCode]).map((g) => g.faultCode).join(",");
   useEffect(() => {
     if (!hydrated || !missing || !status) return;

@@ -1,4 +1,4 @@
-import { callClaude } from "@/lib/claude";
+import { callLLM } from "@/lib/llm";
 import { offlineExtract } from "@/lib/offline";
 import { EXTRACT_SYSTEM } from "@/lib/prompts";
 import { badRequest, withFallback } from "@/lib/route-helpers";
@@ -45,7 +45,16 @@ export async function POST(req: Request) {
 
   return withFallback<StoryExtraction>(
     Boolean(body.demo),
-    () => callClaude({ system: EXTRACT_SYSTEM, user, schema: StoryExtractionSchema, effort: "medium" }),
+    async () => tidy(await callLLM({ system: EXTRACT_SYSTEM, user, schema: StoryExtractionSchema, effort: "medium", timeoutMs: 30_000, deadlineMs: 45_000 })),
     () => offlineExtract(body.englishHint || transcript, machine.id),
   );
+}
+
+/** Strips list numbering and duplicate safety lines that models sometimes add. */
+function tidy(x: StoryExtraction): StoryExtraction {
+  const clean = (s: string) => s.replace(/^\s*(\d+[.)]|[-*•])\s+/, "").trim();
+  return {
+    ...x,
+    fixes: x.fixes.map((f) => ({ ...f, steps: f.steps.map(clean).filter(Boolean), safety: [...new Set(f.safety.map(clean))] })),
+  };
 }

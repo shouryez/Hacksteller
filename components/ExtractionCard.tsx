@@ -6,7 +6,7 @@ import type { Source, Story } from "@/lib/types";
 import { AudioClip } from "./AudioClip";
 import { Badge, Card, Eyebrow, SourceBadge } from "./ui";
 
-export function ExtractionCard({ story, source }: { story: Story; source?: Source }) {
+export function ExtractionCard({ story, source, note }: { story: Story; source?: Source; note?: string }) {
   const x = story.extraction;
   const expert = expertById(story.expertId);
   const machine = machineById(story.machineId);
@@ -27,7 +27,7 @@ export function ExtractionCard({ story, source }: { story: Story; source?: Sourc
             </Link>
           ))}
           <Badge tone={x.confidence === "high" ? "ok" : x.confidence === "medium" ? "warn" : "bad"}>{x.confidence} confidence</Badge>
-          <SourceBadge source={source} />
+          <SourceBadge source={source} note={note} />
         </div>
       </div>
 

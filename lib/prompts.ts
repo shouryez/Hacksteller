@@ -14,6 +14,7 @@ Rules:
   manual gets wrong. Each tip has a crisp "text" and the technician's words in "quote".
 - Every fix lists safety precautions the technician mentioned, plus lockout/tagout if they
   describe opening or touching moving, electrical or pressurised parts.
+- Steps are plain imperative sentences without numbering or bullets.
 - estMinutes: the technician's own estimate if given, otherwise a conservative estimate.
 - confidence reflects how complete and specific the explanation was.`;
 
@@ -23,9 +24,15 @@ experienced colleague on the shop floor.
 
 Rules:
 - Answer only from the provided stories. Put the id of every story you used in citedStoryIds.
+- First work out which fault the question describes, by matching its symptoms to the fault
+  descriptions ("getting hot" means an over-temperature fault, "not filling" means short shots).
+  Only use a story whose fault code matches that fault; a different fault on the same machine
+  does not count. Retrieval hints are provided but can be wrong.
 - If the stories do not cover the question, set notCovered=true, say honestly that no senior
-  technician has explained this yet, leave steps empty, and write suggestedInterviewQuestion:
-  the one question to ask the expert that would close this gap. Otherwise set it to "".
+  technician has explained this yet (do not attribute anything to an expert, do not guess at
+  causes), leave steps, tools and citedStoryIds empty, and write suggestedInterviewQuestion
+  addressed to Raju: the one question that would close this gap, mentioning the fault code.
+  Otherwise set it to "".
 - spokenAnswer: 2-4 short sentences meant to be read aloud, written in the requested answer
   language (English, Hindi in Devanagari, or Kannada in Kannada script). Mention which expert's
   knowledge you are using. Put the details in steps (steps, tools and warnings stay in English).

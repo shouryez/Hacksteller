@@ -1,5 +1,5 @@
-import { callClaude } from "@/lib/claude";
-import { offlineAsk } from "@/lib/offline";
+import { callLLM } from "@/lib/llm";
+import { guessFault, offlineAsk, scoreStories } from "@/lib/offline";
 import { ASK_SYSTEM } from "@/lib/prompts";
 import { badRequest, withFallback } from "@/lib/route-helpers";
 import { hasSarvam, sarvamTranslate } from "@/lib/sarvam";
@@ -22,27 +22,38 @@ export async function POST(req: Request) {
   if (!question) return badRequest("question is required");
   const stories = Array.isArray(body.stories) ? body.stories : [];
 
+  const stats = faultStats();
   const knowledge = stories.map((s) => ({
     id: s.id,
     expert: EXPERTS.find((e) => e.id === s.expertId)?.name ?? s.expertId,
     machineId: s.machineId,
+    faults: s.extraction.faultCodes.map((c) => `${c} ${stats.find((f) => f.faultCode === c)?.description ?? ""}`.trim()),
     recordedAt: s.createdAt.slice(0, 10),
     transcript: s.extraction.transcriptEnglish || s.transcript,
     extraction: { ...s.extraction, transcriptEnglish: undefined },
   }));
+  const ranked = scoreStories(question, stories).slice(0, 3);
+  const likely = guessFault(question);
+  const hints = [
+    likely ? `Fault whose description best matches the question: ${likely.faultCode} (${likely.description}) on ${likely.machineId}.` : "",
+    `Keyword pre-ranking of stories (a hint, may be wrong): ${ranked.map((r) => `${r.story.id} [${r.story.extraction.faultCodes.join(",") || "no code"}]`).join(", ")}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
   const user = [
     `Machines: ${MACHINES.map((m) => `${m.id} = ${m.name}`).join("; ")}`,
-    `Fault statistics (last 12 months):\n${faultStats()
+    `Fault statistics (last 12 months):\n${stats
       .map((f) => `- ${f.faultCode} on ${f.machineId}: ${f.description}, ${f.occurrences}x, ${f.downtimeMin} min`)
       .join("\n")}`,
     `Recorded knowledge (${knowledge.length} stories):\n${JSON.stringify(knowledge)}`,
     `Answer language for spokenAnswer: ${LANG_NAME[body.answerLang ?? "en-IN"] ?? "English"}`,
+    `Retrieval hints:\n${hints}`,
     `Junior technician's question: "${question}"`,
   ].join("\n\n");
 
   return withFallback<AskResult>(
     Boolean(body.demo),
-    () => callClaude({ system: ASK_SYSTEM, user, schema: AskResultSchema, effort: "low" }),
+    () => callLLM({ system: ASK_SYSTEM, user, schema: AskResultSchema, effort: "low", thinking: "light", timeoutMs: 12_000, deadlineMs: 25_000 }),
     async () => {
       const result = offlineAsk(question, stories);
       const lang = body.answerLang ?? "en-IN";

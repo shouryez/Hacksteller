@@ -91,7 +91,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-2 text-xs">
-            <StatusDot on={Boolean(status?.claude)} label={status?.claude ? "Claude" : "Offline brain"} />
+            <StatusDot on={Boolean(status?.ai)} label={status?.ai === "gemini" ? "Gemini" : status?.ai === "claude" ? "Claude" : "Offline brain"} />
             <StatusDot on={Boolean(status?.sarvam)} label={status?.sarvam ? "Sarvam voice" : "Browser voice"} />
             <button
               onClick={() => {

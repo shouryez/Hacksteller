@@ -24,7 +24,7 @@ const EXAMPLES = [
   "The tool changer on the lathe is not indexing properly",
 ];
 
-type Turn = { question: string; result: AskResult; source: Source };
+type Turn = { question: string; result: AskResult; source: Source; note?: string };
 
 export default function AskPage() {
   const status = useStatus();
@@ -50,7 +50,7 @@ export default function AskPage() {
     speaker.stop();
     try {
       const res = await postJson<AskResult>("/api/ask", { question: text, stories, answerLang, demo: demoMode });
-      setTurns((t) => [{ question: text, result: res.data, source: res.source }, ...t]);
+      setTurns((t) => [{ question: text, result: res.data, source: res.source, note: res.note }, ...t]);
       setQuestion("");
       if (res.data.notCovered) {
         const fault = guessFault(text);
@@ -211,7 +211,7 @@ function AnswerCard({ turn, latest, speaking, onSpeak }: { turn: Turn; latest: b
             <span className="font-medium">Raju&apos;s ghost</span>
             <Badge tone="neutral">AI voice reconstruction</Badge>
             {!r.notCovered && <Badge tone={r.confidence === "high" ? "ok" : r.confidence === "medium" ? "warn" : "bad"}>{r.confidence} confidence</Badge>}
-            <SourceBadge source={turn.source} />
+            <SourceBadge source={turn.source} note={turn.note} />
           </div>
           <p className="text-lg leading-snug">{latest ? <Typewriter text={r.spokenAnswer} /> : r.spokenAnswer}</p>
           <Button size="sm" variant="ghost" onClick={onSpeak}>
