@@ -1,0 +1,6 @@
+[
+  { "id": "L-04", "name": "CNC Lathe L-04", "type": "CNC turning centre", "line": "Machining Line A" },
+  { "id": "HP-02", "name": "Hydraulic Press HP-02", "type": "200-tonne hydraulic press", "line": "Press Shop" },
+  { "id": "IM-07", "name": "Injection Moulder IM-07", "type": "Injection moulding machine", "line": "Moulding Bay" },
+  { "id": "CV-01", "name": "Conveyor CV-01", "type": "Belt conveyor", "line": "Assembly Feed" }
+]
