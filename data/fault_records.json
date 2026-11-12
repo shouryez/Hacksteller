@@ -1,0 +1,652 @@
+[
+  {
+    "recordId": "FR-0001",
+    "date": "2025-11-07",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 39,
+    "technician": "Raju G",
+    "resolutionNote": "cleaned"
+  },
+  {
+    "recordId": "FR-0002",
+    "date": "2025-11-19",
+    "machineId": "HP-02",
+    "faultCode": "H-220",
+    "description": "Hydraulic oil temperature high",
+    "downtimeMin": 81,
+    "technician": "Raju G",
+    "resolutionNote": "replaced part"
+  },
+  {
+    "recordId": "FR-0003",
+    "date": "2025-11-20",
+    "machineId": "IM-07",
+    "faultCode": "Q-330",
+    "description": "Short shot / incomplete fill",
+    "downtimeMin": 62,
+    "technician": "Meena I",
+    "resolutionNote": "checked, fine"
+  },
+  {
+    "recordId": "FR-0004",
+    "date": "2025-11-29",
+    "machineId": "L-04",
+    "faultCode": "E-311",
+    "description": "Servo drive over-temperature",
+    "downtimeMin": 239,
+    "technician": "Raju G",
+    "resolutionNote": "replaced part"
+  },
+  {
+    "recordId": "FR-0005",
+    "date": "2025-12-08",
+    "machineId": "IM-07",
+    "faultCode": "Q-410",
+    "description": "Flash on parting line",
+    "downtimeMin": 41,
+    "technician": "Raju G",
+    "resolutionNote": "replaced part"
+  },
+  {
+    "recordId": "FR-0006",
+    "date": "2025-12-10",
+    "machineId": "IM-07",
+    "faultCode": "Q-330",
+    "description": "Short shot / incomplete fill",
+    "downtimeMin": 51,
+    "technician": "Raju G",
+    "resolutionNote": "ok now"
+  },
+  {
+    "recordId": "FR-0007",
+    "date": "2025-12-14",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 40,
+    "technician": "Meena I",
+    "resolutionNote": "restarted"
+  },
+  {
+    "recordId": "FR-0008",
+    "date": "2025-12-17",
+    "machineId": "L-04",
+    "faultCode": "E-311",
+    "description": "Servo drive over-temperature",
+    "downtimeMin": 205,
+    "technician": "Night shift",
+    "resolutionNote": "restarted"
+  },
+  {
+    "recordId": "FR-0009",
+    "date": "2025-12-22",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 57,
+    "technician": "Night shift",
+    "resolutionNote": "cleaned"
+  },
+  {
+    "recordId": "FR-0010",
+    "date": "2025-12-23",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 32,
+    "technician": "Suresh K",
+    "resolutionNote": "restarted"
+  },
+  {
+    "recordId": "FR-0011",
+    "date": "2026-01-01",
+    "machineId": "L-04",
+    "faultCode": "E-105",
+    "description": "Tool changer mis-index",
+    "downtimeMin": 56,
+    "technician": "Raju G",
+    "resolutionNote": "done"
+  },
+  {
+    "recordId": "FR-0012",
+    "date": "2026-01-24",
+    "machineId": "HP-02",
+    "faultCode": "H-102",
+    "description": "Low system pressure / slow ram",
+    "downtimeMin": 139,
+    "technician": "Raju G",
+    "resolutionNote": "restarted"
+  },
+  {
+    "recordId": "FR-0013",
+    "date": "2026-01-25",
+    "machineId": "HP-02",
+    "faultCode": "H-102",
+    "description": "Low system pressure / slow ram",
+    "downtimeMin": 188,
+    "technician": "Night shift",
+    "resolutionNote": "ok now"
+  },
+  {
+    "recordId": "FR-0014",
+    "date": "2026-01-27",
+    "machineId": "CV-01",
+    "faultCode": "C-090",
+    "description": "Drive motor overload",
+    "downtimeMin": 95,
+    "technician": "Raju G",
+    "resolutionNote": "reset ok"
+  },
+  {
+    "recordId": "FR-0015",
+    "date": "2026-02-01",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 34,
+    "technician": "Meena I",
+    "resolutionNote": "checked, fine"
+  },
+  {
+    "recordId": "FR-0016",
+    "date": "2026-03-06",
+    "machineId": "L-04",
+    "faultCode": "E-311",
+    "description": "Servo drive over-temperature",
+    "downtimeMin": 245,
+    "technician": "Night shift",
+    "resolutionNote": "adjusted"
+  },
+  {
+    "recordId": "FR-0017",
+    "date": "2026-03-06",
+    "machineId": "L-04",
+    "faultCode": "E-311",
+    "description": "Servo drive over-temperature",
+    "downtimeMin": 167,
+    "technician": "Raju G",
+    "resolutionNote": "cleaned"
+  },
+  {
+    "recordId": "FR-0018",
+    "date": "2026-03-09",
+    "machineId": "IM-07",
+    "faultCode": "Q-330",
+    "description": "Short shot / incomplete fill",
+    "downtimeMin": 63,
+    "technician": "Meena I",
+    "resolutionNote": "reset, ok"
+  },
+  {
+    "recordId": "FR-0019",
+    "date": "2026-03-12",
+    "machineId": "IM-07",
+    "faultCode": "Q-330",
+    "description": "Short shot / incomplete fill",
+    "downtimeMin": 67,
+    "technician": "Raju G",
+    "resolutionNote": "restarted"
+  },
+  {
+    "recordId": "FR-0020",
+    "date": "2026-03-18",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 32,
+    "technician": "Raju G",
+    "resolutionNote": "reset ok"
+  },
+  {
+    "recordId": "FR-0021",
+    "date": "2026-03-22",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 51,
+    "technician": "Suresh K",
+    "resolutionNote": "called Raju, fixed"
+  },
+  {
+    "recordId": "FR-0022",
+    "date": "2026-03-29",
+    "machineId": "IM-07",
+    "faultCode": "Q-330",
+    "description": "Short shot / incomplete fill",
+    "downtimeMin": 63,
+    "technician": "Raju G",
+    "resolutionNote": "reset ok"
+  },
+  {
+    "recordId": "FR-0023",
+    "date": "2026-04-04",
+    "machineId": "L-04",
+    "faultCode": "E-311",
+    "description": "Servo drive over-temperature",
+    "downtimeMin": 258,
+    "technician": "Suresh K",
+    "resolutionNote": "restarted"
+  },
+  {
+    "recordId": "FR-0024",
+    "date": "2026-04-05",
+    "machineId": "L-04",
+    "faultCode": "E-311",
+    "description": "Servo drive over-temperature",
+    "downtimeMin": 230,
+    "technician": "Night shift",
+    "resolutionNote": "reset, ok"
+  },
+  {
+    "recordId": "FR-0025",
+    "date": "2026-04-05",
+    "machineId": "IM-07",
+    "faultCode": "Q-410",
+    "description": "Flash on parting line",
+    "downtimeMin": 41,
+    "technician": "Suresh K",
+    "resolutionNote": "ok now"
+  },
+  {
+    "recordId": "FR-0026",
+    "date": "2026-04-06",
+    "machineId": "IM-07",
+    "faultCode": "Q-330",
+    "description": "Short shot / incomplete fill",
+    "downtimeMin": 77,
+    "technician": "Suresh K",
+    "resolutionNote": "ok now"
+  },
+  {
+    "recordId": "FR-0027",
+    "date": "2026-04-09",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 29,
+    "technician": "Suresh K",
+    "resolutionNote": "checked, fine"
+  },
+  {
+    "recordId": "FR-0028",
+    "date": "2026-04-13",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 35,
+    "technician": "Suresh K",
+    "resolutionNote": "ok now"
+  },
+  {
+    "recordId": "FR-0029",
+    "date": "2026-04-19",
+    "machineId": "L-04",
+    "faultCode": "E-311",
+    "description": "Servo drive over-temperature",
+    "downtimeMin": 241,
+    "technician": "Night shift",
+    "resolutionNote": "reset ok"
+  },
+  {
+    "recordId": "FR-0030",
+    "date": "2026-04-20",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 33,
+    "technician": "Raju G",
+    "resolutionNote": "ok now"
+  },
+  {
+    "recordId": "FR-0031",
+    "date": "2026-05-03",
+    "machineId": "HP-02",
+    "faultCode": "H-102",
+    "description": "Low system pressure / slow ram",
+    "downtimeMin": 191,
+    "technician": "Night shift",
+    "resolutionNote": "replaced part"
+  },
+  {
+    "recordId": "FR-0032",
+    "date": "2026-05-12",
+    "machineId": "L-04",
+    "faultCode": "E-311",
+    "description": "Servo drive over-temperature",
+    "downtimeMin": 225,
+    "technician": "Suresh K",
+    "resolutionNote": "reset ok"
+  },
+  {
+    "recordId": "FR-0033",
+    "date": "2026-05-13",
+    "machineId": "HP-02",
+    "faultCode": "H-102",
+    "description": "Low system pressure / slow ram",
+    "downtimeMin": 129,
+    "technician": "Raju G",
+    "resolutionNote": "reset, ok"
+  },
+  {
+    "recordId": "FR-0034",
+    "date": "2026-05-20",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 36,
+    "technician": "Meena I",
+    "resolutionNote": "checked, fine"
+  },
+  {
+    "recordId": "FR-0035",
+    "date": "2026-06-02",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 50,
+    "technician": "Suresh K",
+    "resolutionNote": "replaced part"
+  },
+  {
+    "recordId": "FR-0036",
+    "date": "2026-06-03",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 40,
+    "technician": "Suresh K",
+    "resolutionNote": "reset, ok"
+  },
+  {
+    "recordId": "FR-0037",
+    "date": "2026-06-04",
+    "machineId": "L-04",
+    "faultCode": "E-311",
+    "description": "Servo drive over-temperature",
+    "downtimeMin": 169,
+    "technician": "Night shift",
+    "resolutionNote": "called Raju, fixed"
+  },
+  {
+    "recordId": "FR-0038",
+    "date": "2026-06-04",
+    "machineId": "IM-07",
+    "faultCode": "Q-410",
+    "description": "Flash on parting line",
+    "downtimeMin": 39,
+    "technician": "Raju G",
+    "resolutionNote": "checked, fine"
+  },
+  {
+    "recordId": "FR-0039",
+    "date": "2026-06-05",
+    "machineId": "HP-02",
+    "faultCode": "H-102",
+    "description": "Low system pressure / slow ram",
+    "downtimeMin": 168,
+    "technician": "Meena I",
+    "resolutionNote": "called Raju, fixed"
+  },
+  {
+    "recordId": "FR-0040",
+    "date": "2026-06-23",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 55,
+    "technician": "Meena I",
+    "resolutionNote": "reset, ok"
+  },
+  {
+    "recordId": "FR-0041",
+    "date": "2026-06-24",
+    "machineId": "HP-02",
+    "faultCode": "H-220",
+    "description": "Hydraulic oil temperature high",
+    "downtimeMin": 99,
+    "technician": "Raju G",
+    "resolutionNote": "checked, fine"
+  },
+  {
+    "recordId": "FR-0042",
+    "date": "2026-06-24",
+    "machineId": "IM-07",
+    "faultCode": "Q-410",
+    "description": "Flash on parting line",
+    "downtimeMin": 54,
+    "technician": "Raju G",
+    "resolutionNote": "called Raju, fixed"
+  },
+  {
+    "recordId": "FR-0043",
+    "date": "2026-06-25",
+    "machineId": "HP-02",
+    "faultCode": "H-102",
+    "description": "Low system pressure / slow ram",
+    "downtimeMin": 138,
+    "technician": "Raju G",
+    "resolutionNote": "checked, fine"
+  },
+  {
+    "recordId": "FR-0044",
+    "date": "2026-07-07",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 50,
+    "technician": "Meena I",
+    "resolutionNote": "ok now"
+  },
+  {
+    "recordId": "FR-0045",
+    "date": "2026-07-22",
+    "machineId": "IM-07",
+    "faultCode": "Q-330",
+    "description": "Short shot / incomplete fill",
+    "downtimeMin": 60,
+    "technician": "Raju G",
+    "resolutionNote": "cleaned"
+  },
+  {
+    "recordId": "FR-0046",
+    "date": "2026-07-25",
+    "machineId": "IM-07",
+    "faultCode": "Q-330",
+    "description": "Short shot / incomplete fill",
+    "downtimeMin": 75,
+    "technician": "Suresh K",
+    "resolutionNote": "ok now"
+  },
+  {
+    "recordId": "FR-0047",
+    "date": "2026-07-31",
+    "machineId": "IM-07",
+    "faultCode": "Q-330",
+    "description": "Short shot / incomplete fill",
+    "downtimeMin": 43,
+    "technician": "Night shift",
+    "resolutionNote": "done"
+  },
+  {
+    "recordId": "FR-0048",
+    "date": "2026-08-03",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 44,
+    "technician": "Raju G",
+    "resolutionNote": "cleaned"
+  },
+  {
+    "recordId": "FR-0049",
+    "date": "2026-08-07",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 31,
+    "technician": "Raju G",
+    "resolutionNote": "replaced part"
+  },
+  {
+    "recordId": "FR-0050",
+    "date": "2026-08-13",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 34,
+    "technician": "Raju G",
+    "resolutionNote": "ok now"
+  },
+  {
+    "recordId": "FR-0051",
+    "date": "2026-08-17",
+    "machineId": "CV-01",
+    "faultCode": "C-090",
+    "description": "Drive motor overload",
+    "downtimeMin": 133,
+    "technician": "Raju G",
+    "resolutionNote": "checked, fine"
+  },
+  {
+    "recordId": "FR-0052",
+    "date": "2026-08-21",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 42,
+    "technician": "Raju G",
+    "resolutionNote": "checked, fine"
+  },
+  {
+    "recordId": "FR-0053",
+    "date": "2026-08-25",
+    "machineId": "HP-02",
+    "faultCode": "H-102",
+    "description": "Low system pressure / slow ram",
+    "downtimeMin": 133,
+    "technician": "Meena I",
+    "resolutionNote": "called Raju, fixed"
+  },
+  {
+    "recordId": "FR-0054",
+    "date": "2026-08-30",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 54,
+    "technician": "Suresh K",
+    "resolutionNote": "adjusted"
+  },
+  {
+    "recordId": "FR-0055",
+    "date": "2026-09-03",
+    "machineId": "L-04",
+    "faultCode": "E-105",
+    "description": "Tool changer mis-index",
+    "downtimeMin": 75,
+    "technician": "Raju G",
+    "resolutionNote": "adjusted"
+  },
+  {
+    "recordId": "FR-0056",
+    "date": "2026-09-14",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 49,
+    "technician": "Night shift",
+    "resolutionNote": "reset, ok"
+  },
+  {
+    "recordId": "FR-0057",
+    "date": "2026-09-15",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 58,
+    "technician": "Night shift",
+    "resolutionNote": "done"
+  },
+  {
+    "recordId": "FR-0058",
+    "date": "2026-09-18",
+    "machineId": "IM-07",
+    "faultCode": "Q-330",
+    "description": "Short shot / incomplete fill",
+    "downtimeMin": 62,
+    "technician": "Meena I",
+    "resolutionNote": "replaced part"
+  },
+  {
+    "recordId": "FR-0059",
+    "date": "2026-09-22",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 46,
+    "technician": "Suresh K",
+    "resolutionNote": "done"
+  },
+  {
+    "recordId": "FR-0060",
+    "date": "2026-10-04",
+    "machineId": "HP-02",
+    "faultCode": "H-102",
+    "description": "Low system pressure / slow ram",
+    "downtimeMin": 107,
+    "technician": "Raju G",
+    "resolutionNote": "ok now"
+  },
+  {
+    "recordId": "FR-0061",
+    "date": "2026-10-11",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 54,
+    "technician": "Raju G",
+    "resolutionNote": "cleaned"
+  },
+  {
+    "recordId": "FR-0062",
+    "date": "2026-10-17",
+    "machineId": "CV-01",
+    "faultCode": "C-045",
+    "description": "Belt misalignment trip",
+    "downtimeMin": 47,
+    "technician": "Night shift",
+    "resolutionNote": "reset ok"
+  },
+  {
+    "recordId": "FR-0063",
+    "date": "2026-10-21",
+    "machineId": "HP-02",
+    "faultCode": "H-220",
+    "description": "Hydraulic oil temperature high",
+    "downtimeMin": 65,
+    "technician": "Meena I",
+    "resolutionNote": "adjusted"
+  },
+  {
+    "recordId": "FR-0064",
+    "date": "2026-10-28",
+    "machineId": "L-04",
+    "faultCode": "E-217",
+    "description": "Spindle overload alarm",
+    "downtimeMin": 44,
+    "technician": "Raju G",
+    "resolutionNote": "reset ok"
+  },
+  {
+    "recordId": "FR-0065",
+    "date": "2026-10-30",
+    "machineId": "IM-07",
+    "faultCode": "Q-330",
+    "description": "Short shot / incomplete fill",
+    "downtimeMin": 77,
+    "technician": "Meena I",
+    "resolutionNote": "replaced part"
+  }
+]

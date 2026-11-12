@@ -1,0 +1,121 @@
+{
+  "faultCode": "E-311",
+  "machineId": "L-04",
+  "expertId": "raju",
+  "audioUrl": "/audio/demo-e311.mp3",
+  "transcript": "E-311, servo overheating, that comes in summer, March to June, afternoon shift. The manual says check the drive and the fan. Fan is fine, the problem is the filter. The cabinet fan filter gets clogged with oil mist from the coolant, so no air flows. Manual says clean it every three months. No. On this machine, clean it every month, in summer every two weeks. Switch off the main isolator first, the drive has capacitors, wait five minutes. Take out the filter, blow it with air from the inside to outside, or wash it with soap water and dry it fully. Also check the rubber seal on the cabinet door. If it's torn, oil mist goes inside. And on long cycles in afternoon, reduce the feed rate by ten percent. It runs cooler and you don't lose much time. Whole thing, half an hour.",
+  "extraction": {
+    "title": "Servo over-temperature is a clogged cabinet filter",
+    "summary": "E-311 on L-04 comes from the electrical cabinet's fan filter clogging with coolant oil mist, worst on summer afternoons. Clean the filter monthly (fortnightly in summer), check the door seal, and cut feed rate 10% on long afternoon cycles.",
+    "transcriptEnglish": "E-311, servo over-temperature, appears in summer (March to June) on the afternoon shift. The manual says to check the drive and the fan, but the fan is fine; the problem is the cabinet fan filter clogging with coolant oil mist so no air flows. The manual says clean it every three months; on this machine clean it monthly, and every two weeks in summer. Switch off the main isolator first and wait five minutes for the drive capacitors to discharge. Remove the filter and blow it out with air from the inside out, or wash it in soapy water and dry it fully. Check the rubber seal on the cabinet door; if it is torn, oil mist gets inside. On long afternoon cycles, reduce the feed rate by ten percent: it runs cooler and costs little time. About half an hour in total.",
+    "faultCodes": [
+      "E-311"
+    ],
+    "symptoms": [
+      {
+        "id": "s1",
+        "label": "Servo over-temperature alarm on summer afternoons"
+      },
+      {
+        "id": "s2",
+        "label": "Little or no airflow from the cabinet fan"
+      }
+    ],
+    "causes": [
+      {
+        "id": "c1",
+        "label": "Cabinet fan filter clogged with oil mist",
+        "symptomIds": [
+          "s1",
+          "s2"
+        ]
+      },
+      {
+        "id": "c2",
+        "label": "Torn cabinet door seal letting oil mist in",
+        "symptomIds": [
+          "s1"
+        ]
+      }
+    ],
+    "fixes": [
+      {
+        "id": "f1",
+        "label": "Clean the cabinet fan filter",
+        "causeIds": [
+          "c1"
+        ],
+        "steps": [
+          "Switch off the main isolator and wait five minutes for the drive capacitors to discharge",
+          "Remove the cabinet fan filter",
+          "Blow it out with compressed air from the inside to the outside, or wash in soapy water and dry fully",
+          "Refit the filter; clean monthly, every two weeks in summer"
+        ],
+        "tools": [
+          "Compressed air gun",
+          "Mild soap"
+        ],
+        "safety": [
+          "Isolate main power and wait five minutes: the servo drive holds charged capacitors"
+        ],
+        "estMinutes": 20
+      },
+      {
+        "id": "f2",
+        "label": "Replace a torn cabinet door seal",
+        "causeIds": [
+          "c2"
+        ],
+        "steps": [
+          "Inspect the rubber seal on the cabinet door",
+          "Replace it if torn so oil mist cannot enter"
+        ],
+        "tools": [
+          "Replacement door seal"
+        ],
+        "safety": [
+          "Keep the main isolator off while the cabinet is open"
+        ],
+        "estMinutes": 10
+      },
+      {
+        "id": "f3",
+        "label": "Reduce feed rate 10% on long afternoon cycles",
+        "causeIds": [
+          "c1"
+        ],
+        "steps": [
+          "On long cycles during summer afternoons, reduce the feed rate by ten percent"
+        ],
+        "tools": [],
+        "safety": [],
+        "estMinutes": 1
+      }
+    ],
+    "tribalTips": [
+      {
+        "text": "The manual's 3-month filter interval is wrong for L-04: clean monthly, fortnightly in summer",
+        "quote": "Manual says clean it every three months. No. On this machine, clean it every month, in summer every two weeks."
+      },
+      {
+        "text": "It's the filter, not the fan",
+        "quote": "Fan is fine, the problem is the filter."
+      },
+      {
+        "text": "Cut feed 10% on long summer-afternoon cycles to keep the drive cool",
+        "quote": "Reduce the feed rate by ten percent. It runs cooler and you don't lose much time."
+      }
+    ],
+    "confidence": "high",
+    "manualCorrections": [
+      {
+        "manualSays": "Preventive: clean the cabinet air filter every 3 months.",
+        "expertSays": "On L-04 clean it every month, and every two weeks in summer."
+      },
+      {
+        "manualSays": "Check that the cabinet cooling fan is running. Inspect the servo drive unit and replace it if faulty.",
+        "expertSays": "The fan and the drive are fine. The filter is clogged with coolant oil mist; also check the cabinet door seal."
+      }
+    ]
+  }
+}

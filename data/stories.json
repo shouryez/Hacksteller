@@ -1,0 +1,393 @@
+[
+  {
+    "id": "seed-s1",
+    "expertId": "raju",
+    "machineId": "L-04",
+    "createdAt": "2026-11-02T09:40:00.000Z",
+    "language": "en-IN",
+    "audioUrl": "/audio/seed-s1.mp3",
+    "transcript": "See, E-217 comes mostly Monday morning, after the weekend. Everyone just presses reset, reset, reset. Don't do that, you'll burn the drive. What happens is humidity. The coolant gets diluted, concentration drops, and the chips start sticking on the tool, so the spindle loads up. First thing, take the refractometer and check the coolant. It should be six to eight percent. If it's like four, top up concentrate. Then clean the chip conveyor, mostly it's jammed at the back corner. Ten mm Allen key for the cover. Takes twenty minutes. The manual says check the spindle bearings. Ninety percent of the time it's not the bearings.",
+    "extraction": {
+      "title": "Spindle overload after humid weekends",
+      "summary": "E-217 on L-04 is usually diluted coolant and a jammed chip conveyor after a humid weekend, not the spindle bearings. Check coolant concentration before anything else.",
+      "transcriptEnglish": "E-217 mostly appears on Monday mornings after the weekend. People keep pressing reset, which can burn the drive. The cause is humidity: the coolant gets diluted, its concentration drops, chips stick to the tool and the spindle loads up. First check coolant concentration with a refractometer; it should be 6-8%. If it is around 4%, top up concentrate. Then clean the chip conveyor, usually jammed at the back corner (10 mm Allen key for the cover). About twenty minutes. The manual says to check the spindle bearings, but ninety percent of the time it is not the bearings.",
+      "faultCodes": [
+        "E-217"
+      ],
+      "symptoms": [
+        {
+          "id": "s1",
+          "label": "Spindle overload alarm on Monday morning"
+        },
+        {
+          "id": "s2",
+          "label": "Chips sticking to the tool"
+        }
+      ],
+      "causes": [
+        {
+          "id": "c1",
+          "label": "Diluted coolant after humid weekend",
+          "symptomIds": [
+            "s1",
+            "s2"
+          ]
+        },
+        {
+          "id": "c2",
+          "label": "Chip conveyor jammed at back corner",
+          "symptomIds": [
+            "s1"
+          ]
+        }
+      ],
+      "fixes": [
+        {
+          "id": "f1",
+          "label": "Restore coolant concentration",
+          "causeIds": [
+            "c1"
+          ],
+          "steps": [
+            "Do not keep pressing reset; repeated resets can burn the spindle drive",
+            "Check coolant concentration with a refractometer (target 6-8%)",
+            "If it reads around 4%, top up coolant concentrate and re-check"
+          ],
+          "tools": [
+            "Refractometer",
+            "Coolant concentrate"
+          ],
+          "safety": [
+            "Stop the spindle before reaching into the work area"
+          ],
+          "estMinutes": 10
+        },
+        {
+          "id": "f2",
+          "label": "Clear the chip conveyor",
+          "causeIds": [
+            "c2"
+          ],
+          "steps": [
+            "Remove the chip conveyor cover with a 10 mm Allen key",
+            "Clear the jam at the back corner of the conveyor",
+            "Refit the cover and restart"
+          ],
+          "tools": [
+            "10 mm Allen key"
+          ],
+          "safety": [
+            "Lock out and tag out the machine before opening the conveyor cover"
+          ],
+          "estMinutes": 10
+        }
+      ],
+      "tribalTips": [
+        {
+          "text": "E-217 clusters on Monday mornings after humid weekends",
+          "quote": "E-217 comes mostly Monday morning, after the weekend."
+        },
+        {
+          "text": "Never reset repeatedly; it can burn the drive",
+          "quote": "Everyone just presses reset, reset, reset. Don't do that, you'll burn the drive."
+        },
+        {
+          "text": "The manual's spindle-bearing check is usually a red herring",
+          "quote": "The manual says check the spindle bearings. Ninety percent of the time it's not the bearings."
+        }
+      ],
+      "confidence": "high",
+      "manualCorrections": [
+        {
+          "manualSays": "Press RESET and resume the cycle.",
+          "expertSays": "Don't keep pressing reset: repeated resets can burn the spindle drive. Find the cause first."
+        },
+        {
+          "manualSays": "If the alarm repeats, inspect the spindle bearings for wear.",
+          "expertSays": "Ninety percent of the time it isn't the bearings. Check coolant concentration (6-8%) and the chip conveyor first."
+        }
+      ]
+    }
+  },
+  {
+    "id": "seed-s2",
+    "expertId": "raju",
+    "machineId": "HP-02",
+    "createdAt": "2026-11-03T11:15:00.000Z",
+    "language": "en-IN",
+    "audioUrl": "/audio/seed-s2.mp3",
+    "transcript": "When the ram is slow and you hear a whining sound, a high whine, that is air in the system, not the pump. People order a new pump for fifty thousand rupees, no need. Lockout the press first, always, it's stored pressure. Bring the ram fully up, then bleed from the top valve slowly till the oil comes without bubbles. And one more thing. The left pressure gauge reads about ten bar high. It's been like that for years. Always trust the right one.",
+    "extraction": {
+      "title": "Slow ram with a high whine is air, not the pump",
+      "summary": "A slow ram with a high-pitched whine on HP-02 means air in the hydraulic system. Bleed it from the top valve instead of replacing the pump, and trust the right-hand gauge.",
+      "transcriptEnglish": "When the ram is slow and there is a high whining sound, that is air in the system, not the pump. People order a new pump for fifty thousand rupees unnecessarily. Lock out the press first because of stored pressure. Bring the ram fully up, then bleed slowly from the top valve until the oil comes out without bubbles. Also, the left pressure gauge reads about ten bar high and has for years; trust the right one.",
+      "faultCodes": [
+        "H-102"
+      ],
+      "symptoms": [
+        {
+          "id": "s1",
+          "label": "Ram moving slowly"
+        },
+        {
+          "id": "s2",
+          "label": "High-pitched whining sound"
+        }
+      ],
+      "causes": [
+        {
+          "id": "c1",
+          "label": "Air in the hydraulic system",
+          "symptomIds": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "fixes": [
+        {
+          "id": "f1",
+          "label": "Bleed air from the top valve",
+          "causeIds": [
+            "c1"
+          ],
+          "steps": [
+            "Lock out the press; the system holds stored pressure",
+            "Bring the ram fully up",
+            "Open the top bleed valve slowly",
+            "Bleed until the oil comes out with no bubbles, then close the valve",
+            "Read pressure on the right-hand gauge only"
+          ],
+          "tools": [
+            "Spanner for bleed valve",
+            "Drip tray"
+          ],
+          "safety": [
+            "Lock out and tag out the press before bleeding",
+            "Stored hydraulic pressure: open the valve slowly"
+          ],
+          "estMinutes": 30
+        }
+      ],
+      "tribalTips": [
+        {
+          "text": "A slow ram with a whine is air, not a failed pump; don't order a new pump",
+          "quote": "People order a new pump for fifty thousand rupees, no need."
+        },
+        {
+          "text": "The left pressure gauge reads ~10 bar high; trust the right gauge",
+          "quote": "The left pressure gauge reads about ten bar high. Always trust the right one."
+        }
+      ],
+      "confidence": "high",
+      "manualCorrections": [
+        {
+          "manualSays": "Inspect the pump for wear; replace the pump if pressure cannot be restored.",
+          "expertSays": "A slow ram with a high whine is air in the system, not the pump. Bleed it from the top valve; no new pump needed."
+        },
+        {
+          "manualSays": "Check the relief valve setting against the pressure gauge.",
+          "expertSays": "The left gauge reads about 10 bar high. Trust only the right-hand gauge."
+        }
+      ]
+    }
+  },
+  {
+    "id": "seed-s3",
+    "expertId": "meena",
+    "machineId": "IM-07",
+    "createdAt": "2026-11-04T14:05:00.000Z",
+    "language": "en-IN",
+    "audioUrl": "/audio/seed-s3.mp3",
+    "transcript": "Short shots, parts not filling fully. In monsoon this happens a lot. The dryer timer says four hours but in rainy season you give six hours, the material is holding moisture. If drying is fine and still short shots, check heater band number three on the nozzle. It becomes loose. Tighten it only when the machine is cold, never hot, you'll strip the screw and burn your hand also.",
+    "extraction": {
+      "title": "Monsoon short shots: dry longer, check heater band 3",
+      "summary": "Q-330 short shots on IM-07 in the rainy season come from wet material; dry for six hours instead of four. If that's fine, heater band 3 on the nozzle has come loose.",
+      "transcriptEnglish": "Short shots, where parts don't fill completely, happen a lot in the monsoon. The dryer timer says four hours, but in the rainy season give it six because the material holds moisture. If drying is fine and short shots continue, check heater band number three on the nozzle; it works loose. Tighten it only when the machine is cold, never hot, or you will strip the screw and burn your hand.",
+      "faultCodes": [
+        "Q-330"
+      ],
+      "symptoms": [
+        {
+          "id": "s1",
+          "label": "Parts not filling completely (short shots)"
+        }
+      ],
+      "causes": [
+        {
+          "id": "c1",
+          "label": "Moisture in material during monsoon",
+          "symptomIds": [
+            "s1"
+          ]
+        },
+        {
+          "id": "c2",
+          "label": "Loose nozzle heater band 3",
+          "symptomIds": [
+            "s1"
+          ]
+        }
+      ],
+      "fixes": [
+        {
+          "id": "f1",
+          "label": "Extend drying time to six hours",
+          "causeIds": [
+            "c1"
+          ],
+          "steps": [
+            "In the rainy season, set the dryer to six hours instead of the default four"
+          ],
+          "tools": [
+            "Material dryer"
+          ],
+          "safety": [],
+          "estMinutes": 360
+        },
+        {
+          "id": "f2",
+          "label": "Tighten nozzle heater band 3 when cold",
+          "causeIds": [
+            "c2"
+          ],
+          "steps": [
+            "Let the machine cool down completely",
+            "Check heater band number three on the nozzle for looseness",
+            "Tighten the band screw"
+          ],
+          "tools": [
+            "Screwdriver"
+          ],
+          "safety": [
+            "Only work on the heater band when the machine is cold",
+            "Isolate heater power before touching the band"
+          ],
+          "estMinutes": 45
+        }
+      ],
+      "tribalTips": [
+        {
+          "text": "In monsoon, dry for six hours, not the four on the timer",
+          "quote": "The dryer timer says four hours but in rainy season you give six hours."
+        },
+        {
+          "text": "Never tighten the heater band hot",
+          "quote": "Tighten it only when the machine is cold, never hot, you'll strip the screw and burn your hand also."
+        }
+      ],
+      "confidence": "high",
+      "manualCorrections": [
+        {
+          "manualSays": "Dry hygroscopic material for 4 hours at the recommended temperature.",
+          "expertSays": "In the monsoon dry for six hours, not four: the material holds moisture."
+        },
+        {
+          "manualSays": "Raise barrel temperature by 5 to 10 °C.",
+          "expertSays": "Before changing settings, check nozzle heater band 3: it works loose. Tighten it only when the machine is cold."
+        }
+      ]
+    }
+  },
+  {
+    "id": "seed-s4",
+    "expertId": "raju",
+    "machineId": "CV-01",
+    "createdAt": "2026-11-05T10:30:00.000Z",
+    "language": "en-IN",
+    "audioUrl": "/audio/seed-s4.mp3",
+    "transcript": "C-045 means belt is drifting and the sensor trips. Young fellows turn the tracking idler too much. Only quarter turn at a time, then wait, three full rotations of the belt, then see. And before touching anything, look at the tail pulley. Most of the time it's spilled material stuck on the pulley making it uneven. Clean it with the scraper, half the time problem is gone.",
+    "extraction": {
+      "title": "Belt drift: clean the tail pulley before touching the idler",
+      "summary": "C-045 on CV-01 is belt drift tripping the sensor. Check the tail pulley for stuck material first; only then adjust the tracking idler a quarter turn at a time.",
+      "transcriptEnglish": "C-045 means the belt is drifting and the sensor trips. Young technicians over-adjust the tracking idler. Turn it only a quarter turn at a time, then wait three full belt rotations before judging. Before adjusting anything, inspect the tail pulley: usually spilled material stuck on it makes it uneven. Cleaning it with the scraper fixes the problem half the time.",
+      "faultCodes": [
+        "C-045"
+      ],
+      "symptoms": [
+        {
+          "id": "s1",
+          "label": "Belt drifting to one side"
+        },
+        {
+          "id": "s2",
+          "label": "Misalignment sensor trips"
+        }
+      ],
+      "causes": [
+        {
+          "id": "c1",
+          "label": "Spilled material stuck on tail pulley",
+          "symptomIds": [
+            "s1",
+            "s2"
+          ]
+        },
+        {
+          "id": "c2",
+          "label": "Tracking idler out of adjustment",
+          "symptomIds": [
+            "s1"
+          ]
+        }
+      ],
+      "fixes": [
+        {
+          "id": "f1",
+          "label": "Scrape the tail pulley clean",
+          "causeIds": [
+            "c1"
+          ],
+          "steps": [
+            "Stop and lock out the conveyor",
+            "Inspect the tail pulley for stuck material",
+            "Scrape it clean and restart"
+          ],
+          "tools": [
+            "Pulley scraper"
+          ],
+          "safety": [
+            "Lock out the conveyor before touching the pulley"
+          ],
+          "estMinutes": 15
+        },
+        {
+          "id": "f2",
+          "label": "Adjust the tracking idler a quarter turn at a time",
+          "causeIds": [
+            "c2"
+          ],
+          "steps": [
+            "Turn the tracking idler a quarter turn only",
+            "Wait three full belt rotations",
+            "Re-check tracking and repeat if needed"
+          ],
+          "tools": [
+            "Spanner"
+          ],
+          "safety": [
+            "Keep hands clear of the running belt while observing"
+          ],
+          "estMinutes": 20
+        }
+      ],
+      "tribalTips": [
+        {
+          "text": "Check the tail pulley first; it fixes half the drift cases",
+          "quote": "Most of the time it's spilled material stuck on the pulley making it uneven."
+        },
+        {
+          "text": "Quarter turn on the idler, then wait three rotations",
+          "quote": "Only quarter turn at a time, then wait, three full rotations of the belt, then see."
+        }
+      ],
+      "confidence": "high",
+      "manualCorrections": [
+        {
+          "manualSays": "Adjust the tracking idler until the belt runs centred.",
+          "expertSays": "Scrape the tail pulley clean first; that fixes half the cases. Then adjust only a quarter turn at a time and wait three belt rotations."
+        }
+      ]
+    }
+  }
+]
