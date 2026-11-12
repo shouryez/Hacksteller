@@ -40,7 +40,9 @@ Small pop-ups in the bottom-right ("toasts") confirm actions, e.g. "Captured: �
 
 ---
 
-## 2. Risk Radar — `/` (home)
+## 2. Risk Radar — `/radar`
+
+The site root `/` is now an interactive landing page (3D hero, how it works, live graph, in-page Ask demo); "Open the app" leads here.
 
 **For:** showing the problem in numbers: how much repair knowledge is written down, what's missing, and what it's worth.
 

@@ -111,9 +111,9 @@ export default function AskPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-5">
       <div>
-        <Eyebrow>Ask the Ghost · junior technician view</Eyebrow>
-        <h1 className="mt-1 text-2xl font-semibold">Describe the problem like you would on the shop floor.</h1>
-        <p className="text-muted">Answers come only from recorded senior knowledge, with the original recording as proof.</p>
+        <Eyebrow className="text-accent/90">Ask the Ghost · junior technician view</Eyebrow>
+        <h1 className="mt-2 text-balance text-3xl font-semibold leading-[1.05] sm:text-4xl">Describe the problem like you would on the shop floor.</h1>
+        <p className="mt-2 text-muted">Answers come only from recorded senior knowledge, with the original recording as proof.</p>
       </div>
 
       <Card className="space-y-3">
@@ -123,7 +123,7 @@ export default function AskPage() {
             disabled={loading}
             className={cn(
               "grid h-12 w-12 shrink-0 place-items-center rounded-full transition-colors",
-              listening ? "pulse-ring bg-bad text-white" : "bg-accent text-black hover:bg-orange-400",
+              listening ? "pulse-ring bg-bad text-white" : "bg-gradient-to-b from-ember to-accent text-black shadow-[0_0_30px_-8px_rgba(255,122,26,0.9)] hover:brightness-110",
             )}
             aria-label={listening ? "Stop listening" : "Ask by voice"}
           >
@@ -140,7 +140,7 @@ export default function AskPage() {
               value={listening ? liveText : question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder={listening ? "Listening…" : "e.g. machine four is getting hot and the alarm keeps coming back"}
-              className="h-12 min-w-0 flex-1 rounded-lg border border-line bg-panel2 px-4 text-base outline-none focus:border-accent"
+              className="h-12 min-w-0 flex-1 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-base outline-none focus:border-accent"
             />
             <Button type="submit" variant="primary" size="lg" disabled={loading || !question.trim()}>
               {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
@@ -154,7 +154,7 @@ export default function AskPage() {
                 key={ex}
                 onClick={() => void ask(ex)}
                 disabled={loading}
-                className="rounded-full border border-line bg-panel2 px-3 py-1 text-xs text-muted hover:border-accent/50 hover:text-text"
+                className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-muted hover:border-accent/50 hover:text-text"
               >
                 {ex}
               </button>
@@ -207,7 +207,7 @@ function AnswerCard({ turn, latest, speaking, onSpeak }: { turn: Turn; latest: b
         <span className="font-medium text-text">Suresh (junior):</span> &ldquo;{turn.question}&rdquo;
       </div>
       <div className="flex gap-3">
-        <div className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-full", r.notCovered ? "bg-panel2 text-muted" : "bg-accent/15 text-accent")}>
+        <div className={cn("grid h-11 w-11 shrink-0 place-items-center rounded-full", r.notCovered ? "bg-white/[0.04] text-muted" : "bg-accent/15 text-accent")}>
           <Ghost className={cn("h-6 w-6", speaking && "animate-pulse")} />
         </div>
         <div className="min-w-0 flex-1 space-y-2">
@@ -225,7 +225,7 @@ function AnswerCard({ turn, latest, speaking, onSpeak }: { turn: Turn; latest: b
       </div>
 
       {r.notCovered ? (
-        <div className="rounded-lg border border-warn/40 bg-warn/5 p-3 text-sm">
+        <div className="rounded-xl border border-warn/40 bg-warn/5 p-3 text-sm">
           <div className="font-medium text-warn">Not covered yet, so I won&apos;t guess.</div>
           <div className="mt-1 text-muted">Added to Raju&apos;s interview list: &ldquo;{r.suggestedInterviewQuestion}&rdquo;</div>
           <Link href="/interview" className="mt-2 inline-block">
@@ -237,7 +237,7 @@ function AnswerCard({ turn, latest, speaking, onSpeak }: { turn: Turn; latest: b
       ) : (
         <>
           {r.safetyWarnings.length > 0 && (
-            <div className="rounded-lg border border-bad/40 bg-bad/5 p-3 text-sm">
+            <div className="rounded-xl border border-bad/40 bg-bad/5 p-3 text-sm">
               <div className="mb-1 flex items-center gap-1.5 font-semibold text-bad">
                 <AlertTriangle className="h-4 w-4" /> Safety first
               </div>
@@ -251,7 +251,7 @@ function AnswerCard({ turn, latest, speaking, onSpeak }: { turn: Turn; latest: b
           {r.steps.length > 0 && (
             <ol className="space-y-1.5">
               {r.steps.map((s, i) => (
-                <li key={i} className="flex gap-3 rounded-lg border border-line bg-panel2 px-3 py-2 text-sm">
+                <li key={i} className="flex gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-sm">
                   <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-ok/15 text-xs font-semibold text-ok">{i + 1}</span>
                   {s}
                 </li>
@@ -272,7 +272,7 @@ function AnswerCard({ turn, latest, speaking, onSpeak }: { turn: Turn; latest: b
             <div className="space-y-2">
               <Eyebrow>Proof: where this came from</Eyebrow>
               {cited.map((s) => (
-                <div key={s.id} className="flex flex-wrap items-center gap-3 rounded-lg border border-line bg-panel2 p-3">
+                <div key={s.id} className="flex flex-wrap items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3">
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-medium">{s.extraction.title}</div>
                     <div className="text-xs text-muted">

@@ -78,8 +78,8 @@ export default function StoryPage() {
           </h1>
           <p className="max-w-xl text-xl text-muted">Bottle the expert before they retire. Talk, and it becomes a repair guide anyone can ask.</p>
           <Link
-            href="/"
-            className="mt-2 rounded-xl bg-accent px-8 py-3 text-lg font-semibold text-black shadow-[0_0_40px_-6px_rgba(255,122,26,0.8)] hover:bg-orange-400"
+            href="/radar"
+            className="mt-2 rounded-xl bg-accent px-8 py-3 text-lg font-semibold text-black shadow-[0_0_40px_-6px_rgba(255,122,26,0.8)] hover:brightness-110"
           >
             Begin →
           </Link>
@@ -128,7 +128,7 @@ export default function StoryPage() {
       </AnimatePresence>
       <div className="absolute bottom-6 flex gap-1.5">
         {beats.map((b, k) => (
-          <span key={b.key} className={`h-1 rounded-full transition-all ${k === i ? "w-8 bg-accent" : "w-3 bg-line"}`} />
+          <span key={b.key} className={`h-1 rounded-full transition-all ${k === i ? "w-8 bg-accent" : "w-3 bg-white/10"}`} />
         ))}
       </div>
       {i < last && (

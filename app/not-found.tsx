@@ -8,7 +8,7 @@ export default function NotFound() {
         <Ghost className="mx-auto h-14 w-14 text-accent" />
         <h1 className="mt-4 text-3xl font-semibold">Nothing recorded here</h1>
         <p className="mt-2 text-muted">This page vanished like an undocumented fix.</p>
-        <Link href="/" className="mt-6 inline-block rounded-lg bg-accent px-5 py-2.5 font-medium text-black hover:bg-orange-400">
+        <Link href="/radar" className="mt-6 inline-block rounded-xl bg-accent px-5 py-2.5 font-medium text-black hover:brightness-110">
           Back to the Risk Radar
         </Link>
       </div>

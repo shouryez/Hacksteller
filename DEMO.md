@@ -47,7 +47,7 @@ That's PS-15: capture spoken knowledge → connect to fault records → searchab
 
 ## What every page does and how to test it
 
-### Risk Radar `/` (home)
+### Risk Radar `/radar`
 - **Does:** shows how much of last year's machine downtime has a recorded fix, which faults have none, and what that's worth in ₹.
 - **Test:** start at **52%**. After capturing E-311, it should show **86%**, and E-311 disappears from the gap list.
 - Change the "cost of 1 h downtime" number → the ₹ figures update.

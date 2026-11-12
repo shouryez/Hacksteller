@@ -77,7 +77,8 @@ export type AskResult = {
   suggestedInterviewQuestion: string;
 };
 
-export type InterviewQuestion = { faultCode: string; machineId: string; question: string; why: string };
+/** `question` is in the interview language; `questionEn` is always English (used for extraction context). */
+export type InterviewQuestion = { id?: string; faultCode: string; machineId: string; question: string; questionEn?: string; why: string };
 
 export type Guide = {
   faultCode: string;

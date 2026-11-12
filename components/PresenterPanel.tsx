@@ -7,7 +7,7 @@ import { cn } from "./ui";
 
 const STEPS = [
   { href: "/story", match: "/story", title: "Hook", cue: "34 years. 23 days. “Reset ok.” Let the intro play, then click Begin." },
-  { href: "/", match: "/", title: "Risk Radar", cue: "Coverage ~half. Point at E-311 (9×, 33 h, “called Raju, fixed”) and the ₹ at risk." },
+  { href: "/radar", match: "/radar", title: "Risk Radar", cue: "Coverage ~half. Point at E-311 (9×, 33 h, “called Raju, fixed”) and the ₹ at risk." },
   { href: "/interview?code=E-311", match: "/interview", title: "Interview Raju", cue: "Ask aloud → Raju answers (or Rehearsed demo story). Graph grows, coverage jumps, completeness check follows up." },
   { href: "/faults", match: "/faults", title: "Live alarm", cue: "Simulate E-311 → siren → the ghost answers the alarm with Raju’s fix before anyone picks up a phone." },
   { href: "/ask", match: "/ask", title: "Ask the Ghost", cue: "“Machine four is getting hot…” → spoken answer + Raju’s clip. Then “tool changer…” → honest refusal." },
@@ -26,7 +26,7 @@ export function PresenterPanel({ open, onClose }: { open: boolean; onClose: () =
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
-          className="no-print fixed bottom-4 left-4 z-50 w-[min(92vw,330px)] rounded-xl border border-accent/40 bg-panel2/95 p-4 shadow-2xl backdrop-blur"
+          className="no-print fixed bottom-4 left-4 z-50 w-[min(92vw,330px)] rounded-xl border border-accent/40 glass-strong p-4 shadow-2xl backdrop-blur"
         >
           <div className="mb-2 flex items-center justify-between">
             <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">Presenter · 3 min</div>
@@ -40,8 +40,8 @@ export function PresenterPanel({ open, onClose }: { open: boolean; onClose: () =
                 <Link
                   href={s.href}
                   className={cn(
-                    "block rounded-lg border px-3 py-2 text-sm transition-colors",
-                    i === current ? "border-accent/60 bg-accent/10" : "border-transparent hover:border-line",
+                    "block rounded-xl border px-3 py-2 text-sm transition-colors",
+                    i === current ? "border-accent/60 bg-accent/10" : "border-transparent hover:border-white/10",
                   )}
                 >
                   <span className={cn("font-medium", i === current ? "text-accent" : "text-text")}>

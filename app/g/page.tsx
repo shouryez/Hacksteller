@@ -41,7 +41,7 @@ export default function SharedGuidePage() {
           </ul>
         </div>
       )}
-      <div className="rounded-xl border border-line bg-panel p-4">
+      <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
         <div className="mb-2 flex items-center gap-2 font-semibold">
           <Wrench className="h-4 w-4 text-ok" /> Steps
         </div>

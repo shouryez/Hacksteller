@@ -78,4 +78,13 @@ describe("helpers", () => {
     expect(qs[0].question).toBe("Why does the press leak?");
     expect(qs[1].question).toContain("9 times");
   });
+
+  it("keeps item ids and an English copy so the interview page can cache per language", () => {
+    const qs = offlineInterview(
+      [{ id: "gap:E-311", faultCode: "E-311", machineId: "L-04", description: "Servo drive over-temperature", occurrences: 9, downtimeMin: 1758 }],
+      [{ id: "q-1", question: "Why does the press leak?", faultCode: "", machineId: "HP-02" }],
+    ).questions;
+    expect(qs.map((q) => q.id)).toEqual(["q-1", "gap:E-311"]);
+    expect(qs.every((q) => q.questionEn === q.question)).toBe(true);
+  });
 });

@@ -30,7 +30,7 @@ export function StepChecklist({
   return (
     <div>
       <div className="no-print mb-3 flex items-center gap-3">
-        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-line">
+        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
           <div className="h-full rounded-full bg-ok transition-all duration-500" style={{ width: `${progress * 100}%` }} />
         </div>
         <span className="text-xs tabular-nums text-muted">
@@ -47,7 +47,7 @@ export function StepChecklist({
           const on = done.has(i);
           return (
             <li key={i}>
-              <button onClick={() => toggle(i)} className="flex w-full gap-3 rounded-lg text-left" aria-pressed={on}>
+              <button onClick={() => toggle(i)} className="flex w-full gap-3 rounded-xl text-left" aria-pressed={on}>
                 <span
                   className={cn(
                     "grid shrink-0 place-items-center rounded-full font-semibold transition-colors",

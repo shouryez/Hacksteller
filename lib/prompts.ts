@@ -50,7 +50,11 @@ nobody could answer, write one specific, friendly question that will make the te
 the full story: the symptoms, what they check first, the real cause, the fix, the tools, and
 what the manual gets wrong. Mention the fault's history ("this happened 9 times this year") so
 the question feels grounded. At most 30 words per question. "why" is one short line explaining
-why this gap matters (downtime, frequency, single expert).`;
+why this gap matters (downtime, frequency, single expert), in English.
+Write "question" in the requested interview language, the way a colleague would say it out loud
+(English; Hindi in Devanagari script; Kannada in Kannada script). Keep fault codes and machine
+names as they are. Always also fill "questionEn" with the English version, and echo each item's
+"id" unchanged.`;
 
 export const GUIDE_SYSTEM = `You merge one or more technicians' recorded repair stories about a single fault code into one
 clear troubleshooting guide for a junior technician.

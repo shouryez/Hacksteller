@@ -57,8 +57,8 @@ export default function GuidesPage() {
   return (
     <div className="space-y-5">
       <div>
-        <Eyebrow>Troubleshooting guides</Eyebrow>
-        <h1 className="mt-1 text-2xl font-semibold">Every fault code, with what the experts actually do.</h1>
+        <Eyebrow className="text-accent/90">Troubleshooting guides</Eyebrow>
+        <h1 className="mt-2 text-balance text-3xl font-semibold leading-[1.05] sm:text-4xl">Every fault code, with what the experts actually do.</h1>
       </div>
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
@@ -66,7 +66,7 @@ export default function GuidesPage() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search: “coolant”, “whine”, “E-217”, “conveyor drift”…"
-          className="h-12 w-full rounded-xl border border-line bg-panel pl-10 pr-4 outline-none focus:border-accent"
+          className="h-12 w-full rounded-xl border border-white/10 bg-white/[0.03] pl-10 pr-4 outline-none focus:border-accent"
         />
       </div>
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -85,7 +85,7 @@ export default function GuidesPage() {
             </Card>
           </Link>
         ))}
-        {results.length === 0 && <p className="text-muted">No matches.</p>}
+        {results.length === 0 && <p className="mt-2 text-muted">No matches.</p>}
       </div>
     </div>
   );

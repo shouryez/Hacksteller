@@ -22,11 +22,11 @@ export default function ManualPage() {
   return (
     <div className="space-y-5">
       <div>
-        <Eyebrow>Manual vs reality</Eyebrow>
-        <h1 className="mt-1 text-2xl font-semibold">
+        <Eyebrow className="text-accent/90">Manual vs reality</Eyebrow>
+        <h1 className="mt-2 text-balance text-3xl font-semibold leading-[1.05] sm:text-4xl">
           <span className="text-accent">{corrections.length}</span> places where the manual is wrong or incomplete
         </h1>
-        <p className="text-muted">Found by comparing each recording with the official manual. This is the knowledge that exists nowhere on paper.</p>
+        <p className="mt-2 text-muted">Found by comparing each recording with the official manual. This is the knowledge that exists nowhere on paper.</p>
       </div>
 
       {[...byCode.entries()].map(([code, list]) => {
@@ -50,11 +50,11 @@ export default function ManualPage() {
             </div>
             {list.map((c, i) => (
               <div key={i} className="grid gap-2 md:grid-cols-[1fr_1fr_auto] md:items-center">
-                <div className="rounded-lg border border-line bg-panel2 p-3 text-sm">
+                <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-sm">
                   <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted">The manual says</div>
                   <span className="text-muted line-through decoration-bad/60">{c.manualSays}</span>
                 </div>
-                <div className="rounded-lg border border-accent/40 bg-accent/5 p-3 text-sm">
+                <div className="rounded-xl border border-accent/40 bg-accent/5 p-3 text-sm">
                   <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-accent">{expertById(c.story.expertId)?.name} does</div>
                   {c.expertSays}
                 </div>
@@ -74,7 +74,7 @@ export default function ManualPage() {
           {silent.map((m) => {
             const g = cov.gaps.find((x) => x.faultCode === m.faultCode)!;
             return (
-              <div key={m.faultCode} className="flex flex-wrap items-center gap-3 rounded-lg border border-line bg-panel2 p-3">
+              <div key={m.faultCode} className="flex flex-wrap items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3">
                 <div className="min-w-0 flex-1">
                   <div>
                     <span className="font-mono text-bad">{m.faultCode}</span> {g.description} <Badge tone="neutral">{hours(g.downtimeMin)} downtime</Badge>

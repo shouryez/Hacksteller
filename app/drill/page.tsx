@@ -122,7 +122,7 @@ export default function DrillPage() {
     <div className="mx-auto max-w-3xl space-y-4">
       <div className="flex items-center gap-3">
         <Eyebrow>Apprentice drill</Eyebrow>
-        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-line">
+        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
           <div className="h-full rounded-full bg-accent transition-all duration-500" style={{ width: `${((i + (picked !== null ? 1 : 0)) / questions.length) * 100}%` }} />
         </div>
         <span className="text-xs tabular-nums text-muted">
@@ -147,17 +147,17 @@ export default function DrillPage() {
                     onClick={() => pick(k)}
                     disabled={picked !== null}
                     className={cn(
-                      "flex w-full items-start gap-3 rounded-lg border p-3 text-left text-sm transition-colors",
-                      picked === null && "border-line bg-panel2 hover:border-accent/60",
+                      "flex w-full items-start gap-3 rounded-xl border p-3 text-left text-sm transition-colors",
+                      picked === null && "border-white/10 bg-white/[0.03] hover:border-accent/60",
                       picked !== null && isAnswer && "border-ok bg-ok/10",
                       picked !== null && chosen && !isAnswer && "border-bad bg-bad/10",
-                      picked !== null && !chosen && !isAnswer && "border-line bg-panel2 opacity-50",
+                      picked !== null && !chosen && !isAnswer && "border-white/10 bg-white/[0.03] opacity-50",
                     )}
                   >
                     <span
                       className={cn(
                         "grid h-6 w-6 shrink-0 place-items-center rounded-full border text-xs font-semibold",
-                        picked !== null && isAnswer ? "border-ok bg-ok text-black" : picked !== null && chosen ? "border-bad bg-bad text-white" : "border-line text-muted",
+                        picked !== null && isAnswer ? "border-ok bg-ok text-black" : picked !== null && chosen ? "border-bad bg-bad text-white" : "border-white/10 text-muted",
                       )}
                     >
                       {picked !== null && isAnswer ? <Check className="h-3.5 w-3.5" /> : picked !== null && chosen ? <X className="h-3.5 w-3.5" /> : String.fromCharCode(65 + k)}
@@ -168,7 +168,7 @@ export default function DrillPage() {
               })}
             </div>
             {picked !== null && (
-              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-3 rounded-lg border border-line bg-black/30 p-3">
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-3 rounded-xl border border-white/10 bg-black/30 p-3">
                 <div className={cn("font-semibold", picked === q.answer ? "text-ok" : "text-bad")}>
                   {picked === q.answer ? `Exactly what ${storyExpert} would do.` : "Not quite."}
                 </div>
