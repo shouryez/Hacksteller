@@ -64,10 +64,8 @@ export default function ForceGraphInner({ graph, height, highlightIds, machineFi
     }
     const fresh = ids.filter((id) => !known.current!.has(id));
     fresh.forEach((id) => known.current!.add(id));
-    // Nodes that left the filter are hidden immediately.
-    setRevealed((prev) => new Set([...prev].filter((id) => ids.includes(id) && !fresh.includes(id))));
-    const toShow = ids.filter((id) => !fresh.includes(id));
-    setRevealed((prev) => new Set([...prev, ...toShow]));
+    // Existing nodes show at once (and nodes that left the filter disappear); fresh ones pop in below.
+    setRevealed(new Set(ids.filter((id) => !fresh.includes(id))));
     const timers = fresh.map((id, i) =>
       setTimeout(() => {
         const o = objs.current.get(id);
@@ -84,6 +82,7 @@ export default function ForceGraphInner({ graph, height, highlightIds, machineFi
         setRevealed((prev) => new Set([...prev, id]));
       }, (i + 1) * revealDelayMs),
     );
+    if (fresh.length) timers.push(setTimeout(() => fgRef.current?.zoomToFit(800, 50), (fresh.length + 1) * revealDelayMs + 1500));
     return () => timers.forEach(clearTimeout);
   }, [filtered, revealDelayMs]);
 
@@ -117,7 +116,7 @@ export default function ForceGraphInner({ graph, height, highlightIds, machineFi
         onEngineStop={() => {
           if (!fitted.current) {
             fitted.current = true;
-            fgRef.current?.zoomToFit(500, 30);
+            fgRef.current?.zoomToFit(500, 50);
           }
         }}
         linkColor={(l) => ((l as FGLink).fresh ? "rgba(255,122,26,0.7)" : "rgba(120,135,155,0.28)")}

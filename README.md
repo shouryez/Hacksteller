@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GhostWrench 👻🔧
 
-## Getting Started
+**HackStellar PS-15 · "The Retiring Technician"**: voice-first knowledge capture for factory experts who are about to retire.
 
-First, run the development server:
+Raju has fixed these machines for 34 years and retires in 23 days. GhostWrench lets him *talk*. It turns his rambling explanations into a knowledge graph linked to the factory's fault records, and shows which knowledge is still missing. It then interviews him about the gaps and lets juniors ask his "ghost" by voice, with every answer backed by the original recording.
+
+The full build plan and pitch strategy are in [PLAN.md](PLAN.md).
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # add keys (both optional)
+npm run dev                  # http://localhost:3000  (use Chrome for voice)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Key | What it unlocks | Without it |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | Claude (`claude-opus-5-5`) structures any story, answers any question, writes interview questions, and merges guides | The **offline brain** handles it: rehearsed and seed stories extract perfectly, and Ask uses keyword retrieval with honest "not covered" refusals |
+| `SARVAM_API_KEY` | Sarvam Saaras v3 speech-to-text (Hindi, Kannada, code-mixed) and Bulbul v3 voices (Raju's ghost speaks in an Indian voice, including Kannada/Hindi answers) | The browser's Web Speech API and `speechSynthesis` |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The header shows which engines are live. **Demo Mode** (header toggle) skips all live AI calls. Use it if the venue Wi-Fi dies.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Deploy (Vercel)
+Import the repo in Vercel, add the two env vars, and deploy. The HTTPS URL is required for the microphone on phones, and the guide QR codes point to it.
 
-## Learn More
+## The 3-minute demo
 
-To learn more about Next.js, take a look at the following resources:
+1. **Risk Radar** (`/`): Raju retires in 23 days. Coverage is **52%**, and E-311 (servo over-temperature, 33 h downtime) has no captured fix. Point at "records say 'reset ok'" next to Raju's real tip.
+2. Click **Interview Raju about the biggest gap**. Press **Ask aloud** so the AI asks the question.
+3. A teammate playing Raju answers into the mic. If anything goes wrong, use **Rehearsed demo story (E-311)**, which plays Raju's recording with a live transcript. The graph grows node by node, and coverage jumps from **52% to 86%**.
+4. **Ask the Ghost**: tap "Machine four is getting hot…". The ghost answers aloud, safety first, with steps, and plays Raju's clip as proof. Then tap "tool changer not indexing", and it honestly refuses and adds the question to the interview list.
+5. **Guide E-311**: tap the QR code to enlarge it, and a judge scans it with their phone. The whole guide is compressed *inside* the QR, so it opens offline with no app.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Use **Reset** (↺ in the header) between rehearsals.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## How it works
 
-## Deploy on Vercel
+```
+Voice ─▶ Web Speech (live captions) + MediaRecorder
+      ─▶ Sarvam Saaras v3 (chunks < 30 s, transcribe + translate)
+      ─▶ /api/extract ─ Claude structured output ─▶ Story {symptoms, causes, fixes, tools, safety, tribal tips}
+                                                    │
+fault_records.csv ─▶ coverage (downtime-weighted) ◀─┤─▶ knowledge graph (react-force-graph)
+                                                    ├─▶ /api/ask      ─▶ answer + cited stories + original audio ─▶ Bulbul v3 voice
+                                                    ├─▶ /api/interview ─▶ questions for gaps + unanswered junior questions
+                                                    └─▶ /api/guide    ─▶ merged guide ─▶ print / QR (deflate in URL fragment)
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- There's no database and no vector store. Stories live in the browser (Zustand + localStorage, audio in IndexedDB), and the entire knowledge base goes to Claude in full on each call.
+- Every AI route falls back to `lib/offline.ts` on error, without a key, or in Demo Mode.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project map
+
+| Path | What |
+|---|---|
+| `app/` | Pages: radar `/`, `/capture`, `/interview`, `/ask`, `/guides`, `/guides/[code]`, `/graph`, `/g` (QR phone view) and `app/api/*` routes |
+| `components/CaptureStudio.tsx` | Record → transcribe → extract → graph + coverage delta |
+| `lib/claude.ts`, `lib/prompts.ts`, `lib/schemas.ts` | Claude calls (structured outputs via Zod, server-side refusal fallback) |
+| `lib/sarvam.ts`, `lib/audio.ts` | Sarvam STT/TTS, WAV chunking, IndexedDB audio |
+| `lib/offline.ts` | Offline brain |
+| `data/` | Experts, machines, 65 fault records, 4 seed stories, rehearsed E-311 story |
+| `scripts/` | `generate-fault-records.mjs`, `generate-seed-audio.mjs` (Sarvam TTS → wav; convert to mp3 with ffmpeg) |

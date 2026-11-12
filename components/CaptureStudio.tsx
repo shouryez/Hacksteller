@@ -29,10 +29,12 @@ export function CaptureStudio({
   presetMachineId,
   question,
   onSaved,
+  stacked = false,
 }: {
   presetMachineId?: string;
   question?: string;
   onSaved?: (s: Story) => void;
+  stacked?: boolean;
 }) {
   const status = useStatus();
   const stories = useStore((s) => s.stories);
@@ -210,7 +212,7 @@ export function CaptureStudio({
   const busy = phase === "transcribing" || phase === "extracting";
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+    <div className={cn("grid gap-5", !stacked && "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]")}>
       <div className="space-y-4">
         {question && (
           <Card className="border-accent/40 bg-accent/5">
@@ -350,12 +352,12 @@ export function CaptureStudio({
         )}
       </div>
 
-      <div className="space-y-3 lg:sticky lg:top-20 lg:self-start">
+      <div className={cn("space-y-3", !stacked && "lg:sticky lg:top-20 lg:self-start")}>
         <div className="flex items-center justify-between">
           <Eyebrow>Living knowledge graph</Eyebrow>
           <Badge tone="neutral">{graph.nodes.length} nodes</Badge>
         </div>
-        <KnowledgeGraph graph={graph} height={520} highlightIds={highlight} />
+        <KnowledgeGraph graph={graph} height={stacked ? 420 : 520} highlightIds={highlight} />
         <GraphLegend />
       </div>
     </div>

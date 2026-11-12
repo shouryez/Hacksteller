@@ -141,6 +141,7 @@ function Interview() {
               </Card>
               <CaptureStudio
                 key={selected.id}
+                stacked
                 presetMachineId={selected.machineId || undefined}
                 question={selected.question}
                 onSaved={() => {

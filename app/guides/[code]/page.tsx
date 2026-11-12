@@ -23,6 +23,7 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
   const cacheGuide = useStore((s) => s.cacheGuide);
   const [merging, setMerging] = useState(false);
   const [qrUrl, setQrUrl] = useState<string | null>(null);
+  const [qrBig, setQrBig] = useState(false);
 
   const stat = faultStats().find((f) => f.faultCode === code);
   const records = FAULT_RECORDS.filter((r) => r.faultCode === code).slice(-5).reverse();
@@ -53,6 +54,21 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
 
   return (
     <div className="space-y-5">
+      {qrBig && qrUrl && (
+        <button
+          onClick={() => setQrBig(false)}
+          className="no-print fixed inset-0 z-50 grid place-items-center bg-black/85 p-6"
+          aria-label="Close QR code"
+        >
+          <div className="rounded-2xl bg-white p-6 text-center text-black">
+            <QRCodeSVG value={qrUrl} size={Math.min(560, typeof window === "undefined" ? 480 : window.innerHeight - 160)} level="L" marginSize={2} />
+            <div className="mt-3 text-lg font-semibold">
+              Scan with your phone camera: {code} guide
+            </div>
+            <div className="text-sm text-gray-600">The whole guide is inside the code. No app, no login, no internet needed to read it.</div>
+          </div>
+        </button>
+      )}
       <div className="no-print flex flex-wrap items-center justify-between gap-3">
         <Link href="/guides" className="text-sm text-muted hover:text-text">
           ← All guides
@@ -94,12 +110,12 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
             </div>
           </div>
           {guide && qrUrl && (
-            <div className="rounded-xl bg-white p-3 text-center text-black">
-              <QRCodeSVG value={qrUrl} size={148} level="L" />
-              <div className="mt-1 flex items-center justify-center gap-1 text-[10px] font-medium">
-                <QrCode className="h-3 w-3" /> Scan: works offline
+            <button onClick={() => setQrBig(true)} className="rounded-xl bg-white p-3 text-center text-black" title="Enlarge to scan">
+              <QRCodeSVG value={qrUrl} size={190} level="L" marginSize={1} />
+              <div className="mt-1 flex items-center justify-center gap-1 text-[11px] font-medium">
+                <QrCode className="h-3 w-3" /> Tap to enlarge · works offline
               </div>
-            </div>
+            </button>
           )}
         </div>
       </Card>
