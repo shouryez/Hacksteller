@@ -58,9 +58,9 @@ export default function FaultsPage() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <Eyebrow>Fault log</Eyebrow>
-          <h1 className="mt-1 text-2xl font-semibold">Every machine fault, linked to what the experts know</h1>
-          <p className="text-muted">The log records what broke. GhostWrench attaches how it was actually fixed.</p>
+          <Eyebrow className="text-accent/90">Fault log</Eyebrow>
+          <h1 className="mt-2 text-balance text-3xl font-semibold leading-[1.05] sm:text-4xl">Every machine fault, linked to what the experts know</h1>
+          <p className="mt-2 text-muted">The log records what broke. GhostWrench attaches how it was actually fixed.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <input ref={fileRef} type="file" accept=".csv,text/csv" className="hidden" onChange={(e) => e.target.files?.[0] && void importCsv(e.target.files[0])} />
@@ -91,7 +91,7 @@ export default function FaultsPage() {
         <select
           value={alarmTarget?.faultCode ?? ""}
           onChange={(e) => setAlarmCode(e.target.value)}
-          className="h-10 max-w-full min-w-0 flex-1 rounded-lg border border-line bg-panel2 px-3 text-sm outline-none focus:border-accent sm:flex-none"
+          className="h-10 max-w-full min-w-0 flex-1 rounded-xl border border-white/10 bg-white/[0.03] px-3 text-sm outline-none focus:border-accent sm:flex-none"
           aria-label="Fault to simulate"
         >
           {cov.faults.map((f) => (
@@ -112,21 +112,21 @@ export default function FaultsPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search code, description, technician, note…"
-            className="h-10 w-full rounded-lg border border-line bg-panel pl-9 pr-3 text-sm outline-none focus:border-accent"
+            className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.03] pl-9 pr-3 text-sm outline-none focus:border-accent"
           />
         </div>
         {[{ id: "", name: "All machines" }, ...machinesFor(records)].map((m) => (
           <button
             key={m.id || "all"}
             onClick={() => setMachine(m.id)}
-            className={cn("h-10 rounded-lg border px-3 text-xs", machine === m.id ? "border-accent bg-accent/10 text-accent" : "border-line text-muted hover:text-text")}
+            className={cn("h-10 rounded-xl border px-3 text-xs", machine === m.id ? "border-accent bg-accent/10 text-accent" : "border-white/10 text-muted hover:text-text")}
           >
             {m.id || m.name}
           </button>
         ))}
         <button
           onClick={() => setOnlyGaps((v) => !v)}
-          className={cn("h-10 rounded-lg border px-3 text-xs", onlyGaps ? "border-bad bg-bad/10 text-bad" : "border-line text-muted hover:text-text")}
+          className={cn("h-10 rounded-xl border px-3 text-xs", onlyGaps ? "border-bad bg-bad/10 text-bad" : "border-white/10 text-muted hover:text-text")}
         >
           Only gaps
         </button>
@@ -135,7 +135,7 @@ export default function FaultsPage() {
       <Card className="p-0">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[860px] text-left text-sm">
-            <thead className="border-b border-line text-[11px] uppercase tracking-wider text-muted">
+            <thead className="border-b border-white/10 text-[11px] uppercase tracking-wider text-muted">
               <tr>
                 <th className="px-4 py-3 font-semibold">Date</th>
                 <th className="px-3 py-3 font-semibold">Machine</th>
@@ -150,7 +150,7 @@ export default function FaultsPage() {
                 const f = byCode.get(r.faultCode);
                 const story = f?.covered ? stories.find((s) => s.id === f.storyIds[0]) : undefined;
                 return (
-                  <tr key={r.recordId} className="border-b border-line/60 last:border-0 hover:bg-panel2/50">
+                  <tr key={r.recordId} className="border-b border-white/5 last:border-0 hover:bg-white/[0.04]">
                     <td className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-muted">{r.date}</td>
                     <td className="px-3 py-2.5">{r.machineId}</td>
                     <td className="px-3 py-2.5">
@@ -198,7 +198,7 @@ export default function FaultsPage() {
           </table>
         </div>
         {rows.length > 25 && (
-          <div className="border-t border-line p-3 text-center">
+          <div className="border-t border-white/10 p-3 text-center">
             <button onClick={() => setShowAll((v) => !v)} className="text-sm text-muted hover:text-text">
               {showAll ? "Show fewer" : `Show all ${rows.length} records`}
             </button>

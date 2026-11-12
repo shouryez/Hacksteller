@@ -72,7 +72,7 @@ export function AlarmOverlay() {
           <motion.div
             initial={{ scale: 0.92, y: 20 }}
             animate={{ scale: 1, y: 0 }}
-            className="alarm-frame relative w-full max-w-2xl rounded-2xl border-2 border-bad bg-panel p-6 shadow-[0_0_80px_-10px_rgba(239,68,68,0.7)]"
+            className="alarm-frame relative w-full max-w-2xl rounded-2xl border-2 border-bad bg-white/[0.03] p-6 shadow-[0_0_80px_-10px_rgba(239,68,68,0.7)]"
           >
             <button onClick={clear} className="absolute right-4 top-4 text-muted hover:text-text" aria-label="Dismiss alarm">
               <X className="h-5 w-5" />

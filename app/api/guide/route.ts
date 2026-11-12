@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
   return withFallback<Guide>(
     Boolean(body.demo),
-    async () => ({ ...(await callLLM({ system: GUIDE_SYSTEM, user, schema: GuideSchema, effort: "medium", timeoutMs: 30_000, deadlineMs: 45_000 })), faultCode: code }),
+    async () => ({ ...(await callLLM({ system: GUIDE_SYSTEM, user, schema: GuideSchema, effort: "medium", thinking: "light", timeoutMs: 30_000, deadlineMs: 45_000 })), faultCode: code }),
     () => offline,
   );
 }

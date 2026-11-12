@@ -82,9 +82,9 @@ export default function LibraryPage() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <Eyebrow>Knowledge Vault</Eyebrow>
-          <h1 className="mt-1 text-2xl font-semibold">Every recording, structured and searchable</h1>
-          <p className="text-muted">
+          <Eyebrow className="text-accent/90">Knowledge Vault</Eyebrow>
+          <h1 className="mt-2 text-balance text-3xl font-semibold leading-[1.05] sm:text-4xl">Every recording, structured and searchable</h1>
+          <p className="mt-2 text-muted">
             {stories.length} stories · {totals.fixes} fixes · {totals.tips} tribal tips · {totals.codes} fault codes
           </p>
         </div>
@@ -106,7 +106,7 @@ export default function LibraryPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search transcripts, fixes, tips…"
-            className="h-10 w-full rounded-lg border border-line bg-panel pl-9 pr-3 text-sm outline-none focus:border-accent"
+            className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.03] pl-9 pr-3 text-sm outline-none focus:border-accent"
           />
         </div>
         <Chips value={machine} onChange={setMachine} options={MACHINES.map((m) => ({ value: m.id, label: m.id }))} all="All machines" />
@@ -146,9 +146,9 @@ export default function LibraryPage() {
               <AnimatePresence initial={false}>
                 {isOpen && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                    <div className="space-y-3 border-t border-line p-4">
+                    <div className="space-y-3 border-t border-white/10 p-4">
                       {s.interviewQuestion && <p className="text-sm text-muted">Answering: &ldquo;{s.interviewQuestion}&rdquo;</p>}
-                      <div className="rounded-lg border border-line bg-black/30 p-3 text-sm leading-relaxed">
+                      <div className="rounded-xl border border-white/10 bg-black/30 p-3 text-sm leading-relaxed">
                         <Eyebrow className="mb-1">Transcript</Eyebrow>
                         {s.transcript}
                       </div>
@@ -172,7 +172,7 @@ function Chips({ value, onChange, options, all }: { value: string; onChange: (v:
         <button
           key={o.value || "all"}
           onClick={() => onChange(o.value)}
-          className={cn("h-10 rounded-lg border px-3 text-xs", value === o.value ? "border-accent bg-accent/10 text-accent" : "border-line text-muted hover:text-text")}
+          className={cn("h-10 rounded-xl border px-3 text-xs", value === o.value ? "border-accent bg-accent/10 text-accent" : "border-white/10 text-muted hover:text-text")}
         >
           {o.label}
         </button>

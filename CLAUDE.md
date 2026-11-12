@@ -3,7 +3,7 @@
 Voice-first knowledge capture for retiring factory technicians. **The full spec is in `PLAN.md`; read it before building anything.**
 
 ## Stack
-Next.js 15 (App Router) + TypeScript, Tailwind + shadcn/ui, Zustand (persisted to localStorage), idb-keyval for audio blobs, react-force-graph-2d, Fuse.js, qrcode.react. AI via `lib/llm.ts`: Gemini REST (`lib/gemini.ts`, JSON-schema output from Zod, model chain with timeouts/cooldowns) when `GEMINI_API_KEY` is set, else Claude via `@anthropic-ai/sdk` (`claude-opus-5-5`, `lib/claude.ts`). Web Speech API for speech-to-text, `speechSynthesis` for speech output.
+Next.js 15 (App Router) + TypeScript, Tailwind + shadcn/ui, Zustand (persisted to localStorage), idb-keyval for audio blobs, react-force-graph-2d (live graph in Capture) and react-force-graph-3d + three / @react-three/fiber (Graph page, landing hero), framer-motion, Fuse.js, qrcode.react. AI via `lib/llm.ts`: Gemini REST (`lib/gemini.ts`, JSON-schema output from Zod, model chain with timeouts/cooldowns) when `GEMINI_API_KEY` is set, else Claude via `@anthropic-ai/sdk` (`claude-opus-5-5`, `lib/claude.ts`). Web Speech API for speech-to-text, `speechSynthesis` for speech output.
 
 ## Rules
 - `GEMINI_API_KEY` / `ANTHROPIC_API_KEY` live only in `.env.local` / Vercel env vars. Never commit them; call AI only from `app/api/*` routes through `callLLM`.

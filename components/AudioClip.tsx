@@ -47,7 +47,7 @@ export function AudioClip({ story, label = "Original recording", className }: { 
     <button
       onClick={toggle}
       className={cn(
-        "group inline-flex items-center gap-2 rounded-lg border border-line bg-panel2 px-2.5 py-1.5 text-xs text-text hover:border-accent/60",
+        "group inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-2.5 py-1.5 text-xs text-text hover:border-accent/60",
         className,
       )}
     >
@@ -55,7 +55,7 @@ export function AudioClip({ story, label = "Original recording", className }: { 
         {playing ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3 translate-x-px" />}
       </span>
       <span>{label}</span>
-      <span className="relative h-1 w-16 overflow-hidden rounded bg-line">
+      <span className="relative h-1 w-16 overflow-hidden rounded bg-white/10">
         <span className="absolute inset-y-0 left-0 bg-accent" style={{ width: `${progress * 100}%` }} />
       </span>
     </button>

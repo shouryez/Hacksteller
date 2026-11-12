@@ -55,7 +55,7 @@ export async function POST(req: Request) {
 
   return withFallback<StoryExtraction>(
     Boolean(body.demo),
-    async () => tidy(await callLLM({ system: EXTRACT_SYSTEM, user, schema: StoryExtractionSchema, effort: "medium", timeoutMs: 30_000, deadlineMs: 45_000 })),
+    async () => tidy(await callLLM({ system: EXTRACT_SYSTEM, user, schema: StoryExtractionSchema, effort: "medium", thinking: "light", timeoutMs: 30_000, deadlineMs: 45_000 })),
     () => offlineExtract(body.englishHint || transcript, machine.id, stats),
   );
 }

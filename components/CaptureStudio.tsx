@@ -33,11 +33,18 @@ const LANGS: { value: Lang; label: string }[] = [
 export function CaptureStudio({
   presetMachineId,
   question,
+  questionEn,
+  onMachineChange,
   onSaved,
   stacked = false,
 }: {
   presetMachineId?: string;
+  /** Shown to the interviewer (may be Hindi/Kannada). */
   question?: string;
+  /** English version, sent to the extraction prompt. */
+  questionEn?: string;
+  /** When set, the parent owns the machine (Interview Mode): picking one asks it to switch question. */
+  onMachineChange?: (machineId: string) => void;
   onSaved?: (s: Story) => void;
   stacked?: boolean;
 }) {
@@ -97,7 +104,7 @@ export function CaptureStudio({
         expertId,
         language: lang,
         existingLabels: existingLabels(stories),
-        interviewQuestion: question,
+        interviewQuestion: questionEn ?? question,
         extraRecords,
         demo: demoMode,
       });
@@ -246,19 +253,13 @@ export function CaptureStudio({
   return (
     <div className={cn("grid grid-cols-[minmax(0,1fr)] gap-5", !stacked && "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]")}>
       <div className="space-y-4">
-        {question && (
-          <Card className="border-accent/40 bg-accent/5">
-            <Eyebrow className="text-accent">Interview question</Eyebrow>
-            <p className="mt-1 text-lg leading-snug">{question}</p>
-          </Card>
-        )}
         <Card className="space-y-4">
           <div className="grid gap-3 sm:grid-cols-3">
             <Select label="Expert" value={expertId} onChange={setExpertId} options={EXPERTS.map((e) => ({ value: e.id, label: e.name }))} />
             <Select
               label="Machine"
               value={machineId}
-              onChange={setMachineId}
+              onChange={onMachineChange ?? setMachineId}
               options={machinesFor(records).map((m) => ({ value: m.id, label: m.name === m.id ? m.id : `${m.id} · ${m.name.split(" ").slice(0, -1).join(" ")}` }))}
             />
             <Select label="Spoken language" value={lang} onChange={(v) => setLang(v as Lang)} options={LANGS} />
@@ -277,7 +278,7 @@ export function CaptureStudio({
               <button
                 onClick={() => void startRecording()}
                 disabled={busy}
-                className="grid h-28 w-28 place-items-center rounded-full bg-accent text-black shadow-[0_0_40px_-6px_rgba(255,122,26,0.8)] transition-transform hover:scale-105 disabled:opacity-50"
+                className="grid h-28 w-28 place-items-center rounded-full bg-gradient-to-b from-ember to-accent text-black shadow-[0_0_60px_-8px_rgba(255,122,26,0.9),inset_0_2px_0_rgba(255,255,255,0.4)] ring-8 ring-accent/10 transition-transform hover:scale-105 disabled:opacity-50"
                 aria-label="Start recording"
               >
                 {busy ? <Loader2 className="h-10 w-10 animate-spin" /> : <Mic className="h-12 w-12" />}
@@ -287,7 +288,7 @@ export function CaptureStudio({
               {Array.from({ length: 24 }).map((_, i) => {
                 const lvl = phase === "recording" ? (simAudioRef.current ? 0.3 + 0.5 * Math.abs(Math.sin(Date.now() / 200 + i)) : rec.level) : 0.05;
                 const h = Math.max(3, lvl * 32 * (0.5 + 0.5 * Math.abs(Math.sin(i * 1.7))));
-                return <span key={i} className={cn("w-1.5 rounded-full", phase === "recording" ? "bg-bad" : "bg-line")} style={{ height: h }} />;
+                return <span key={i} className={cn("w-1.5 rounded-full", phase === "recording" ? "bg-bad" : "bg-white/10")} style={{ height: h }} />;
               })}
             </div>
             <div className="text-sm text-muted">
@@ -311,7 +312,7 @@ export function CaptureStudio({
 
           <AnimatePresence>
             {(phase === "recording" || liveText) && phase !== "done" && (
-              <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-lg border border-line bg-black/40 p-3">
+              <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-xl border border-white/10 bg-black/30 p-3">
                 <Eyebrow>Live transcript</Eyebrow>
                 <p className="mt-1 min-h-12 text-sm leading-relaxed">
                   {liveText || (
@@ -333,7 +334,7 @@ export function CaptureStudio({
                 onChange={(e) => setTranscript(e.target.value)}
                 rows={5}
                 placeholder="Type or paste what the technician said…"
-                className="w-full rounded-lg border border-line bg-panel2 p-3 text-sm outline-none focus:border-accent"
+                className="w-full rounded-xl border border-white/10 bg-white/[0.03] p-3 text-sm outline-none focus:border-accent"
               />
               {englishHint && englishHint !== transcript && <p className="text-xs text-muted">English (Sarvam translate): {englishHint}</p>}
               <Button variant="primary" size="sm" disabled={!transcript.trim() || busy} onClick={() => void extract(transcript.trim(), englishHint)}>
@@ -360,7 +361,7 @@ export function CaptureStudio({
         {phase === "extracting" && (
           <Card className="space-y-3">
             {[0, 1, 2].map((i) => (
-              <div key={i} className="h-4 animate-pulse rounded bg-panel2" style={{ width: `${90 - i * 20}%` }} />
+              <div key={i} className="h-4 animate-pulse rounded bg-white/[0.04]" style={{ width: `${90 - i * 20}%` }} />
             ))}
           </Card>
         )}
@@ -447,7 +448,7 @@ function CompletenessCard({
         ))}
       </div>
       {missing.map((c) => (
-        <div key={c.key} className="flex flex-wrap items-center gap-2 rounded-lg border border-line bg-panel2 p-3">
+        <div key={c.key} className="flex flex-wrap items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] p-3">
           <div className="min-w-0 flex-1 text-sm">
             <span className="text-muted">Missing {c.label.toLowerCase()}. Ask: </span>
             &ldquo;{c.followUp}&rdquo;

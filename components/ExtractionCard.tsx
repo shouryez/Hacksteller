@@ -38,7 +38,7 @@ export function ExtractionCard({ story, source, note }: { story: Story; source?:
       </div>
 
       {x.fixes.some((f) => f.safety.length) && (
-        <div className="rounded-lg border border-bad/30 bg-bad/5 p-3 text-sm">
+        <div className="rounded-xl border border-bad/30 bg-bad/5 p-3 text-sm">
           <div className="mb-1 flex items-center gap-1.5 font-medium text-bad">
             <AlertTriangle className="h-4 w-4" /> Safety
           </div>
@@ -53,7 +53,7 @@ export function ExtractionCard({ story, source, note }: { story: Story; source?:
       {x.fixes.length > 0 && (
         <div className="space-y-2">
           {x.fixes.map((f) => (
-            <div key={f.id} className="rounded-lg border border-line bg-panel2 p-3">
+            <div key={f.id} className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
               <div className="flex items-center gap-1.5 text-sm font-medium">
                 <Wrench className="h-4 w-4 text-ok" /> {f.label}
               </div>
@@ -82,7 +82,7 @@ export function ExtractionCard({ story, source, note }: { story: Story; source?:
             <Lightbulb className="h-3.5 w-3.5" /> Tribal knowledge (not in any manual)
           </Eyebrow>
           {x.tribalTips.map((t, i) => (
-            <blockquote key={i} className="rounded-lg border-l-2 border-accent bg-accent/5 px-3 py-2 text-sm">
+            <blockquote key={i} className="rounded-xl border-l-2 border-accent bg-accent/5 px-3 py-2 text-sm">
               <div className="font-medium">{t.text}</div>
               <div className="mt-0.5 italic text-muted">&ldquo;{t.quote}&rdquo;</div>
             </blockquote>
@@ -96,8 +96,8 @@ export function ExtractionCard({ story, source, note }: { story: Story; source?:
           </Eyebrow>
           {x.manualCorrections!.map((c, i) => (
             <div key={i} className="grid gap-2 text-sm sm:grid-cols-2">
-              <div className="rounded-lg border border-line bg-panel2 px-3 py-2 text-muted line-through decoration-bad/60">{c.manualSays}</div>
-              <div className="rounded-lg border border-accent/40 bg-accent/5 px-3 py-2">{c.expertSays}</div>
+              <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-muted line-through decoration-bad/60">{c.manualSays}</div>
+              <div className="rounded-xl border border-accent/40 bg-accent/5 px-3 py-2">{c.expertSays}</div>
             </div>
           ))}
         </div>
@@ -109,7 +109,7 @@ export function ExtractionCard({ story, source, note }: { story: Story; source?:
 
 function Column({ title, items, color }: { title: string; items: string[]; color: string }) {
   return (
-    <div className="rounded-lg border border-line bg-panel2 p-3">
+    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
       <div className={`mb-1 text-xs font-semibold uppercase tracking-wider ${color}`}>{title}</div>
       {items.length ? (
         <ul className="space-y-1 text-sm">

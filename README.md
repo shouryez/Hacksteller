@@ -17,7 +17,7 @@ npm run dev:sync             # same, but auto-pulls new commits from GitHub ever
 
 | Key | What it unlocks | Without it |
 |---|---|---|
-| `GEMINI_API_KEY` | **Primary AI.** Gemini structures any story, answers any question, writes interview questions and merges guides. It tries `gemini-2.5-flash` → `2.5-flash-lite` → `flash-latest` → `3.8-flash`, skipping models that are rate-limited or overloaded | — |
+| `GEMINI_API_KEY` | **Primary AI.** Gemini structures any story, answers any question, writes interview questions and merges guides. It tries `gemini-3.5-flash` → `3.5-flash-lite` → `3.8-flash` → `flash-latest` → `flash-lite-latest` → `2.5-flash`, skipping models that are rate-limited, overloaded or retired for your key | — |
 | `ANTHROPIC_API_KEY` | Alternative AI (Claude `claude-opus-5-5`), used only when no Gemini key is set | — |
 | *(no AI key, or AI fails)* | The **offline brain** answers: rehearsed and seed stories extract perfectly, and Ask uses keyword retrieval with honest "not covered" refusals | |
 | `SARVAM_API_KEY` | Sarvam Saaras v3 speech-to-text (Hindi, Kannada, code-mixed), translation, and Bulbul v3 voices (Raju's ghost speaks in an Indian voice) | The browser's Web Speech API and `speechSynthesis` |
@@ -36,9 +36,10 @@ Import the repo in Vercel, add the two env vars, and deploy. The HTTPS URL is re
 | Screen | What it does |
 |---|---|
 | **Intro** `/story` | Full-screen cinematic opener for the pitch (auto-plays; Space/→ to advance) |
-| **Risk Radar** `/` | Retirement countdown, downtime-weighted coverage, gaps ranked by downtime, and the ₹ impact of captured vs missing knowledge (editable cost per downtime hour) |
+| **Landing** `/` | Interactive 3D landing page: the problem, how it works, a live knowledge graph and an in-page "Ask the ghost" demo (offline brain) |
+| **Risk Radar** `/radar` | Retirement countdown, downtime-weighted coverage, gaps ranked by downtime, and the ₹ impact of captured vs missing knowledge (editable cost per downtime hour) |
 | **Capture** `/capture` | Talk → live captions → Sarvam transcription → structured story → knowledge graph grows node by node → coverage delta |
-| **Interview** `/interview` | AI questions about each gap plus every question the ghost couldn't answer; read aloud, record the answer, gap closes |
+| **Interview** `/interview` | AI questions about each gap plus every question the ghost couldn't answer, written in English, Hindi or Kannada (switcher in the header) and read aloud in that language; record the answer, gap closes |
 | **Ask the Ghost** `/ask` | Voice or text; spoken answer in English/Hindi/Kannada, safety first, steps, cited original recording; honest refusal + auto-queued interview question |
 | **Guides** `/guides` | Fuzzy search; each guide has a tap-to-tick checklist, print view and an offline QR (`/g`) |
 | **Fault Log** `/faults` | The plant's fault records linked to expert knowledge; **CSV import** of a real fault log; **live alarm simulation** — the ghost answers an alarm with the expert's fix (or exposes the gap) |
@@ -46,14 +47,14 @@ Import the repo in Vercel, add the two env vars, and deploy. The HTTPS URL is re
 | **Apprentice Drill** `/drill` | The ghost quizzes juniors: scenario questions generated from the stories, with manual-trap wrong answers and the recording in every explanation |
 | **Handover report** `/report` | Printable one-pager for HR/maintenance head: captured knowledge, gaps, business impact, sign-off lines |
 | **Vault** `/library` | Every recording: search, filter, play, inspect, delete, export/import JSON |
-| **Graph** `/graph` | Full knowledge graph with machine filters; click a node to hear its sources |
+| **Graph** `/graph` | 3D knowledge graph (layered: machine → fault → symptom → cause → fix → tool), hover to focus a neighbourhood, click to fly in and hear the sources; 2D mode and machine filters |
 
 Also: **capture completeness check** (the AI notices what the expert left out and asks the follow-up), **"log this fix"** on every guide (writes a real resolution back into the fault record and shows repair time before → after), presenter cue-card (press **P**), toasts, Demo Mode, installable PWA, styled 404/error pages, works down to 320 px wide.
 
 ## The 3-minute demo
 
 0. **Intro** (`/story`): let it play, then click **Begin**. Press **P** any time for the cue-card.
-1. **Risk Radar** (`/`): Raju retires in 23 days. Coverage is **52%**, and E-311 (servo over-temperature, 33 h downtime) has no captured fix. Point at "records say 'reset ok'" next to Raju's real tip.
+1. **Risk Radar** (`/radar`): Raju retires in 23 days. Coverage is **52%**, and E-311 (servo over-temperature, 33 h downtime) has no captured fix. Point at "records say 'reset ok'" next to Raju's real tip.
 2. Click **Interview Raju about the biggest gap**. Press **Ask aloud** so the AI asks the question.
 3. A teammate playing Raju answers into the mic. If anything goes wrong, use **Rehearsed demo story (E-311)**, which plays Raju's recording with a live transcript. The graph grows node by node, and coverage jumps from **52% to 86%**.
 4. **Ask the Ghost**: tap "Machine four is getting hot…". The ghost answers aloud, safety first, with steps, and plays Raju's clip as proof. Then tap "tool changer not indexing", and it honestly refuses and adds the question to the interview list.

@@ -198,7 +198,7 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
             It happened {stat?.occurrences ?? 0} times and cost {hours(stat?.downtimeMin ?? 0)}. Records only say things like &ldquo;{records.find((r) => !r.viaGuide)?.resolutionNote || "—"}&rdquo;.
           </p>
           {manual && (
-            <div className="mt-3 rounded-lg border border-line bg-panel2 p-3 text-sm">
+            <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 text-sm">
               <div className="mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
                 <BookX className="h-3.5 w-3.5" /> All the manual offers · {manual.source}
               </div>
@@ -253,7 +253,7 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
                   ))}
                 </div>
               )}
-              <div className="no-print mt-4 border-t border-line pt-4">
+              <div className="no-print mt-4 border-t border-white/10 pt-4">
                 {!logOpen ? (
                   <div className="flex flex-wrap items-center gap-3">
                     <Button variant={allDone ? "primary" : "outline"} onClick={() => setLogOpen(true)}>
@@ -270,7 +270,7 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
                         min={1}
                         value={minutes ?? guide.estMinutes}
                         onChange={(e) => setMinutes(Number(e.target.value) || 1)}
-                        className="h-10 w-28 rounded-lg border border-line bg-panel2 px-3 text-sm text-text outline-none focus:border-accent"
+                        className="h-10 w-28 rounded-xl border border-white/10 bg-white/[0.03] px-3 text-sm text-text outline-none focus:border-accent"
                       />
                     </label>
                     <label className="flex flex-col gap-1 text-xs text-muted">
@@ -278,7 +278,7 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
                       <input
                         value={technician}
                         onChange={(e) => setTechnician(e.target.value)}
-                        className="h-10 w-44 rounded-lg border border-line bg-panel2 px-3 text-sm text-text outline-none focus:border-accent"
+                        className="h-10 w-44 rounded-xl border border-white/10 bg-white/[0.03] px-3 text-sm text-text outline-none focus:border-accent"
                       />
                     </label>
                     <Button variant="primary" onClick={submitFix}>
@@ -300,11 +300,11 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
                   <div className="space-y-2">
                     {corrections.map((c, i) => (
                       <div key={i} className="grid gap-2 sm:grid-cols-2">
-                        <div className="rounded-lg border border-line bg-panel2 p-3 text-sm">
+                        <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3 text-sm">
                           <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted">The manual says</div>
                           <span className="text-muted line-through decoration-bad/60">{c.manualSays}</span>
                         </div>
-                        <div className="rounded-lg border border-accent/40 bg-accent/5 p-3 text-sm">
+                        <div className="rounded-xl border border-accent/40 bg-accent/5 p-3 text-sm">
                           <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-accent">
                             {expertById(c.story.expertId)?.name.split(" ")[0]} does
                           </div>
@@ -331,7 +331,7 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
                 </Eyebrow>
                 <div className="space-y-2">
                   {guide.tips.map((t, i) => (
-                    <blockquote key={i} className="rounded-lg border-l-2 border-accent bg-accent/5 px-3 py-2 text-sm">
+                    <blockquote key={i} className="rounded-xl border-l-2 border-accent bg-accent/5 px-3 py-2 text-sm">
                       <div className="font-medium">{t.text}</div>
                       <div className="mt-0.5 italic text-muted">&ldquo;{t.quote}&rdquo;</div>
                     </blockquote>
@@ -343,7 +343,7 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
               <Eyebrow className="mb-2">Sources</Eyebrow>
               <div className="space-y-2">
                 {linked.map((s) => (
-                  <div key={s.id} className="rounded-lg border border-line bg-panel2 p-3">
+                  <div key={s.id} className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
                     <div className="text-sm font-medium">{s.extraction.title}</div>
                     <div className="mb-2 text-xs text-muted">
                       {expertById(s.expertId)?.name} · {new Date(s.createdAt).toLocaleDateString()}
@@ -358,7 +358,7 @@ export default function GuidePage({ params }: { params: Promise<{ code: string }
                 <FileText className="h-3.5 w-3.5" /> What the fault log says
               </Eyebrow>
               {repair.guidedN > 0 && repair.beforeN > 0 && (
-                <div className="mb-3 flex items-center gap-2 rounded-lg border border-ok/40 bg-ok/10 px-3 py-2 text-sm">
+                <div className="mb-3 flex items-center gap-2 rounded-xl border border-ok/40 bg-ok/10 px-3 py-2 text-sm">
                   <Timer className="h-4 w-4 shrink-0 text-ok" />
                   <span>
                     Repair time: <span className="text-muted line-through">{Math.round(repair.beforeAvg)} min</span>{" "}

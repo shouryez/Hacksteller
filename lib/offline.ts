@@ -341,20 +341,16 @@ function clip(s: string, n = 80): string {
 }
 
 export function offlineInterview(
-  gaps: { faultCode: string; machineId: string; description: string; occurrences: number; downtimeMin: number }[],
-  junior: { question: string; faultCode: string; machineId: string }[],
+  gaps: { id?: string; faultCode: string; machineId: string; description: string; occurrences: number; downtimeMin: number }[],
+  junior: { id?: string; question: string; faultCode: string; machineId: string }[],
 ): { questions: InterviewQuestion[] } {
   const qs: InterviewQuestion[] = gaps.map((g) => {
     const m = machineById(g.machineId);
-    return {
-      faultCode: g.faultCode,
-      machineId: g.machineId,
-      question: `Raju, ${g.faultCode} (${g.description.toLowerCase()}) on ${m?.name} happened ${g.occurrences} times this year. When it shows up, what do you check first, and what's the real fix?`,
-      why: `${hours(g.downtimeMin)} of downtime and no captured fix.`,
-    };
+    const question = `Raju, ${g.faultCode} (${g.description.toLowerCase()}) on ${m?.name} happened ${g.occurrences} times this year. When it shows up, what do you check first, and what's the real fix?`;
+    return { id: g.id ?? `gap:${g.faultCode}`, faultCode: g.faultCode, machineId: g.machineId, question, questionEn: question, why: `${hours(g.downtimeMin)} of downtime and no captured fix.` };
   });
   for (const j of junior) {
-    qs.unshift({ faultCode: j.faultCode, machineId: j.machineId, question: j.question, why: "A junior asked this and nobody could answer." });
+    qs.unshift({ id: j.id, faultCode: j.faultCode, machineId: j.machineId, question: j.question, questionEn: j.question, why: "A junior asked this and nobody could answer." });
   }
   return { questions: qs };
 }

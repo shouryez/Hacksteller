@@ -5,7 +5,8 @@ import { SEED_STORIES } from "./seed";
 import type { FaultRecord, Guide, Lang, QueuedQuestion, Source, Story } from "./types";
 
 type GuideCacheEntry = { key: string; guide: Guide; source: Source };
-export type GapQuestion = { question: string; why: string; source: Source };
+/** Cached interview wording, keyed by `${itemId}|${lang}`. */
+export type GapQuestion = { question: string; questionEn?: string; why: string; source: Source };
 
 type State = {
   stories: Story[];

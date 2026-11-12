@@ -21,7 +21,7 @@ export function Toaster() {
               initial={{ opacity: 0, y: 16, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, x: 40 }}
-              className="pointer-events-auto flex gap-3 rounded-xl border border-line bg-panel2/95 p-3 shadow-2xl backdrop-blur"
+              className="pointer-events-auto flex gap-3 rounded-xl border border-white/10 bg-white/[0.03]/95 p-3 shadow-2xl backdrop-blur"
             >
               <Icon className={`mt-0.5 h-5 w-5 shrink-0 ${COLOR[t.tone]}`} />
               <div className="min-w-0 flex-1">

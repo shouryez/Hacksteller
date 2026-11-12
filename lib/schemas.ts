@@ -40,7 +40,14 @@ export const AskResultSchema = z.object({
 
 export const InterviewSchema = z.object({
   questions: z.array(
-    z.object({ faultCode: z.string(), machineId: z.string(), question: z.string(), why: z.string() }),
+    z.object({
+      id: z.string().describe("Echo the id given for this gap or junior question"),
+      faultCode: z.string(),
+      machineId: z.string(),
+      question: z.string().describe("The question in the requested interview language"),
+      questionEn: z.string().describe("The same question in English"),
+      why: z.string(),
+    }),
   ),
 });
 
