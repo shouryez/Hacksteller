@@ -4,7 +4,7 @@
 
 Raju has fixed these machines for 34 years and retires in 23 days. GhostWrench lets him *talk*. It turns his rambling explanations into a knowledge graph linked to the factory's fault records, and shows which knowledge is still missing. It then interviews him about the gaps and lets juniors ask his "ghost" by voice, with every answer backed by the original recording.
 
-The full build plan and pitch strategy are in [PLAN.md](PLAN.md).
+The full build plan and pitch strategy are in [PLAN.md](PLAN.md). **How to present and test it: [DEMO.md](DEMO.md).**
 
 ## Run it
 
